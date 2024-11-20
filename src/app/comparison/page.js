@@ -92,7 +92,7 @@ export default function Compare() {
       })
       .catch((error) => console.error("Error fetching CSV:", error));
 
-    fetch("/AllPolicy/addons_names.csv")
+    fetch("/AllPolicy/addons_names_cost.csv")
       .then((response) => response.text())
       .then((csvText) => {
         const result = papa.parse(csvText, { header: true });
@@ -109,7 +109,8 @@ export default function Compare() {
       let tab;
       let premium;
       for (let i = 0; i < filteredData.length; i++) {
-
+        
+        fetch("/AllPolicy/loadingcharge.csv")
         let loadingCharge = 0.3
         let insuranceRebate = 20000
 
@@ -122,7 +123,7 @@ export default function Compare() {
           })
           .catch((error) => console.error("Error fetching CSV:", error));
       }
-
+      
       setComparisonResult(filteredData);
     }
   }, [formData]);
@@ -269,4 +270,11 @@ export default function Compare() {
       }
     </>
   );
+}
+
+
+
+
+{
+
 }
