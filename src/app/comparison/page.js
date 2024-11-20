@@ -127,7 +127,6 @@ export default function Compare() {
       setComparisonResult(filteredData);
     }
 
-/*
 function calculateLoadingCharge(filteredData, term) {
   let loadingCharge = 1; // Default loading charge
 
@@ -181,26 +180,24 @@ function calculateInsuranceRebate(filteredData, FormData) {
   const company2Policies = [4, 5, 6, 12, 13, 18, 19];
   const company3Policies = [7, 8, 9, 14, 15, 20, 21];
 
-  let rebatePerThousand = 0;
+  let rebateAmount = 0;
 
   // Identify the company based on the policy number
   if (company1Policies.includes(filteredData.policy)) {
       // Company 1: Use rebate1
-      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate1");
+      rebateAmount = getRebate(FormData.insuredAmount, rebateData, "rebate1");
   } else if (company2Policies.includes(filteredData.policy)) {
       // Company 2: Use rebate2
-      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate2");
+      rebateAmount = getRebate(FormData.insuredAmount, rebateData, "rebate2");
   } else if (company3Policies.includes(filteredData.policy)) {
       // Company 3: Use rebate3
-      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate3");
+      rebateAmount = getRebate(FormData.insuredAmount, rebateData, "rebate3");
   } else {
       console.log("Invalid policy number");
       return 0; // No rebate if policy number is invalid
   }
 
-  // Calculate total rebate
-  const insuredAmountInThousands = FormData.insuredAmount / 1000;
-  return rebatePerThousand * insuredAmountInThousands;
+  return rebateAmount;
 }
 
 // Helper function to determine the rebate based on insured amount and column
@@ -255,7 +252,6 @@ function calculateAddonsCost(FormData, selectedAddons) {
 
   return addonsCostTotal;
 }
-*/ 
 
   }, [formData]);
 
@@ -381,6 +377,7 @@ function calculateAddonsCost(FormData, selectedAddons) {
         </div >
       ) : (
         <>
+        
           <div id="majorView">
             <h1> Choose an Add-on </h1>
             <div id="filterinfoicon">ⓘ<span id="filterinfo">Click on a addon to filter the policies</span></div>
@@ -418,6 +415,7 @@ function calculateAddonsCost(FormData, selectedAddons) {
               document.getElementById("majorView").style.display = "none";
             }} > Accept Selection </button>
           </div>
+        
           {
             comparisonResult.map((policy, index) => {
               return (
