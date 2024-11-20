@@ -12,7 +12,7 @@ import DataFilter from "./DataFilter";
 
 export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
-
+  const [selectedAddons, setSelectedAddons] = useState([]);
   const [csvData, setCsvData] = useState([]);
   const [addonNames, setAddonNames] = useState([]);
   const [comparisonResult, setComparisonResult] = useState([]);
@@ -109,7 +109,7 @@ export default function Compare() {
       let tab;
       let premium;
       for (let i = 0; i < filteredData.length; i++) {
-        
+
         fetch("/AllPolicy/loadingcharge.csv")
         let loadingCharge = 0.3
         let insuranceRebate = 20000
@@ -123,10 +123,22 @@ export default function Compare() {
           })
           .catch((error) => console.error("Error fetching CSV:", error));
       }
-      
+
       setComparisonResult(filteredData);
     }
   }, [formData]);
+
+
+  const handleAddonChange = (event) => {
+    const addonNumber = event.target.id;
+
+    // If checkbox is checked, add to array; if unchecked, remove from array
+    setSelectedAddons(prevSelectedAddons =>
+      event.target.checked
+        ? [...prevSelectedAddons, addonNumber]
+        : prevSelectedAddons.filter(addon => addon !== addonNumber)
+    );
+  };
 
 
   return (
@@ -239,21 +251,23 @@ export default function Compare() {
       ) : (
         <>
           <div id="majorView">
+            <h1> Choose an Add-on </h1>
             <div id="filterinfoicon">ⓘ<span id="filterinfo">Click on a addon to filter the policies</span></div>
-            <nav id="filter">
+            <div id="filter">
               {
                 addonNames.map((addon, index) => {
                   if (addon["Add-on Number"] != "") {
                     return (
                       <div key={index} className="filterAddons">
-                        <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} />
+                        <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} onChange={handleAddonChange} />
                         <label htmlFor={addon["Add-on Number"]}>{addon["Add-on Name"]}</label>
                       </div>
                     );
                   }
                 })
               }
-            </nav>
+            </div>
+            <button id="AddonAccept" > Accept Selection </button>
           </div>
           {
             comparisonResult.map((policy, index) => {
@@ -273,8 +287,3 @@ export default function Compare() {
 }
 
 
-
-
-{
-
-}
