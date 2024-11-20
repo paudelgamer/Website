@@ -109,9 +109,10 @@ export default function Compare() {
       let tab;
       let premium;
       for (let i = 0; i < filteredData.length; i++) {
-
+        
         fetch("/AllPolicy/loadingcharge.csv")
         let loadingCharge = 0.3
+
         let insuranceRebate = 20000
 
         fetch(`/AllPolicy/${filteredData[i].policy}.csv`)
@@ -126,6 +127,137 @@ export default function Compare() {
 
       setComparisonResult(filteredData);
     }
+
+/*
+function calculateLoadingCharge(filteredData, term) {
+  let loadingCharge = 1; // Default loading charge
+
+  // Define policies for each company
+  const company1Policies = [1, 2, 3, 10, 11, 16, 17];
+  const company2Policies = [4, 5, 6, 12, 13, 18, 19];
+  const company3Policies = [7, 8, 9, 14, 15, 20, 21];
+
+  // Define loading charges for payment methods
+  const loadingData = {
+      "1": { loading1: 1, loading2: 1.01, loading3: 1.03 },
+      "0.5": { loading1: 0.98, loading2: 1.0, loading3: 1.2 },
+      "0.25": { loading1: 0.97, loading2: 0.99, loading3: 1.5 },
+      "0.083": { loading1: 0.95, loading2: 1.2, loading3: 1.7 },
+  };
+
+  // Determine the company based on the policy number
+  if (company1Policies.includes(filteredData.policy)) {
+      // Company 1
+      if (term in loadingData) {
+          loadingCharge = loadingData[FormData.term].loading1;
+      }
+  } else if (company2Policies.includes(filteredData.policy)) {
+      // Company 2
+      if (term in loadingData) {
+          loadingCharge = loadingData[FormData.term].loading2;
+      }
+  } else if (company3Policies.includes(filteredData.policy)) {
+      // Company 3
+      if (term in loadingData) {
+          loadingCharge = loadingData[FormData.term].loading3;
+      }
+  } else {
+      console.log("Invalid policy number or term");
+  }
+
+  return loadingCharge;
+}
+
+function calculateInsuranceRebate(filteredData, FormData) {
+  // Rebate data: [min, max, rebate1, rebate2, rebate3]
+  const rebateData = [
+      { min: 25000, max: 49000, rebate1: 0.5, rebate2: 0.25, rebate3: 1 },
+      { min: 50000, max: 99000, rebate1: 1.0, rebate2: 0.5, rebate3: 1.25 },
+      { min: 100000, max: 199000, rebate1: 1.5, rebate2: 1.0, rebate3: 1.75 },
+      { min: 200000, max: 99999999999, rebate1: 2.0, rebate2: 2.0, rebate3: 2.5 },
+  ];
+
+  // Define policies for each company
+  const company1Policies = [1, 2, 3, 10, 11, 16, 17];
+  const company2Policies = [4, 5, 6, 12, 13, 18, 19];
+  const company3Policies = [7, 8, 9, 14, 15, 20, 21];
+
+  let rebatePerThousand = 0;
+
+  // Identify the company based on the policy number
+  if (company1Policies.includes(filteredData.policy)) {
+      // Company 1: Use rebate1
+      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate1");
+  } else if (company2Policies.includes(filteredData.policy)) {
+      // Company 2: Use rebate2
+      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate2");
+  } else if (company3Policies.includes(filteredData.policy)) {
+      // Company 3: Use rebate3
+      rebatePerThousand = getRebate(FormData.insuredAmount, rebateData, "rebate3");
+  } else {
+      console.log("Invalid policy number");
+      return 0; // No rebate if policy number is invalid
+  }
+
+  // Calculate total rebate
+  const insuredAmountInThousands = FormData.insuredAmount / 1000;
+  return rebatePerThousand * insuredAmountInThousands;
+}
+
+// Helper function to determine the rebate based on insured amount and column
+function getRebate(insuredAmount, rebateData, rebateKey) {
+  for (let rebate of rebateData) {
+      if (insuredAmount >= rebate.min && insuredAmount <= rebate.max) {
+          return rebate[rebateKey];
+      }
+  }
+  return 0; // Default rebate if no range matches
+}
+
+// Example usage
+const filteredData = { policy: 1 }; // Example policy number
+const FormData = { insuredAmount: 75000 }; // Example insured amount (75,000 Rs)
+
+const rebate = calculateInsuranceRebate(filteredData, FormData);
+console.log("Total Insurance Rebate:", rebate);
+
+
+function calculateAddonsCost(FormData, selectedAddons) {
+  // Define the cost of add-ons per 1000 Rs insured
+  const addonsData = {
+      "1": 1, // Accidental Death Benefit
+      "2": 5, // Termrider
+      "3.1": 2, // Critical Illness Payout
+      "3.2": 1, // Critical Illness No Premium Pay
+      "4": 10, // Spouse Rider
+      "5.1": 2, // Disability Payout
+      "5.2": 1, // Disability No Premium Pay
+      "6": 1, // Child Education Rider
+      "7": 3, // Hospital Rider
+      "8": 1, // Time Extension Rider
+      "9": 0.25, // Funeral Expense Rider
+      "10": 10, // Employment Loss No Premium Rider
+      "11": 5, // Travel Add-on
+      "12": 3 // Premium Return in Term Life
+  };
+
+  let addonsCostTotal = 0;
+
+  // Calculate total add-ons cost
+  selectedAddons.forEach((addon) => {
+      if (addonsData[addon]) {
+          const costPer1k = addonsData[addon];
+          const insuredAmountInThousands = FormData.insuredAmount / 1000;
+          addonsCostTotal += costPer1k * insuredAmountInThousands;
+      } else {
+          console.log(`Add-on ${addon} not found in the database.`);
+      }
+  });
+
+  return addonsCostTotal;
+}
+*/ 
+
   }, [formData]);
 
 
@@ -211,23 +343,23 @@ export default function Compare() {
                 </span>
 
                 <span id="term">
-                  <input type="radio" name="term" value="Monthly" /> Monthly
-                  <input type="radio" name="term" value="Quarterly" /> Quarterly
-                  <input type="radio" name="term" value="Half-Yearly" />{" "}
+                  <input type="radio" name="term" value="0.083" /> Monthly
+                  <input type="radio" name="term" value="0.25" /> Quarterly
+                  <input type="radio" name="term" value="0.5" />{" "}
                   Half-Yearly
                   <input
                     id="preselect"
                     type="radio"
                     name="term"
-                    value="Yearly"
+                    value="1"
                     aria-checked="true"
                   />{" "}
                   Yearly
                 </span>
                 <input
                   type="text"
-                  placeholder="Date Of Birth  (B.S.)"
-                  id="dobField"
+                  placeholder="Age"
+                  id="ageField"
                 />
                 <input
                   type="text"
