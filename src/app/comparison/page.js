@@ -7,7 +7,6 @@ import { row } from "mathjs";
 import DataFilter from "./DataFilter";
 
 //just simple fxn to calculate age from date
-
 //this Fxn works....better leave it that way
 
 export default function Compare() {
@@ -385,10 +384,11 @@ function calculateAddonsCost(FormData, selectedAddons) {
           <div id="majorView">
             <h1> Choose an Add-on </h1>
             <div id="filterinfoicon">ⓘ<span id="filterinfo">Click on a addon to filter the policies</span></div>
-            <div id="filter">
+            <h3> Free Add-on </h3>
+            <div id="filterFree" className="filter">
               {
                 addonNames.map((addon, index) => {
-                  if (addon["Add-on Number"] != "") {
+                  if ((addon["Add-on Number"] != "") && (addon["Costper1k"] == "0")) {
                     return (
                       <div key={index} className="filterAddons">
                         <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} onChange={handleAddonChange} />
@@ -399,7 +399,24 @@ function calculateAddonsCost(FormData, selectedAddons) {
                 })
               }
             </div>
-            <button id="AddonAccept" > Accept Selection </button>
+            <h3> Paid Add-on </h3>
+            <div id="filterFree" className="filter">
+              {
+                addonNames.map((addon, index) => {
+                  if ((addon["Add-on Number"] != "") && (addon["Costper1k"] != "0")) {
+                    return (
+                      <div key={index} className="filterAddons">
+                        <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} onChange={handleAddonChange} />
+                        <label htmlFor={addon["Add-on Number"]}>{addon["Add-on Name"]}</label>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+            <button id="AddonAccept" onClick={() => {
+              document.getElementById("majorView").style.display = "none";
+            }} > Accept Selection </button>
           </div>
           {
             comparisonResult.map((policy, index) => {

@@ -170,31 +170,35 @@ div.surrounddatafields {
 
 #majorView {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
   background-color: var(--palewhite);
   border-radius: 1vw;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 13vh;
   font-weight: 500;
   color: var(--secondary);
+  overflow-y: scroll;
 }
 
 #AddonAccept {
   background-color: var(--secondary);
   border: none;
-  padding: 1vh;
+  padding: 2vh;
+  margin: 1vh;
   border-radius: 1vw;
   color: var(--palewhite);
   font-weight: 900;
+  font-size: 1.5vw;
   cursor: pointer;
 }
 
-#filter {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+#filterFree {
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* flex-wrap: wrap; */
   margin-bottom: 1vw;
   color: var(--secondary);
 }
@@ -204,7 +208,7 @@ div.surrounddatafields {
 }
 
 .filterAddons label {
-  padding: 0.5vw;
+  padding: 0.5vh;
   transition: 0.2s ease-in-out;
   border-radius: 0.5vw;
 }
@@ -216,6 +220,8 @@ div.surrounddatafields {
 
 .filterAddons input:checked+label {
   background-color: var(--secondary);
+  padding: 1.0vh;
+  margin: 0.5vh;
   color: var(--palewhite);
 }
 
