@@ -181,20 +181,21 @@ export default function Compare() {
                                                           arr["policy"] == 20 ? [1, 2, 4, 6, 9, 12, 67, 69, 70, 71] :
                                                             arr["policy"] == 21 ? [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69] : []
 
+                    let policy_num = arr["policy"]
                     return (
                       <div key={index} className="filteredPolicies">
-                        <h1>{arr["policy"]}</h1>
+                        <h1>{policy_num}</h1>
                         <h2>
-                          {arr["policy"] in company1Policies ? "Himalayan Life Insurance" :
-                            arr["policy"] in company2Policies ? "Life Insurance Corporation Nepal" :
-                              arr["policy"] in company3Policies ? "Nepal Life" : ""
+                          {
+                            (company1Policies.includes(policy_num)) ? "Himalayan Life Insurance" :
+                              (company2Policies.includes(policy_num)) ? "Life Insurance Corporation Nepal" :
+                                (company3Policies.includes(policy_num)) ? "Nepal Life" : ""
                           }
                         </h2>
                         Premium: {arr["premium"]}. CSR: {
-                          arr["policy"] in company1Policies ? 83 :
-                            arr["policy"] in company2Policies ? 95 :
-                              arr["policy"] in company3Policies ? 87 :
-                                0
+                          (company1Policies.includes(policy_num)) ? 83 :
+                            (company2Policies.includes(policy_num)) ? 95 :
+                              (company3Policies.includes(policy_num)) ? 87 : 0
                         }. Addons: {
                           policy_addons.map((addon, index) => {
                             let addonName = ""
