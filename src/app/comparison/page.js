@@ -12,13 +12,18 @@ import { runPythonScript } from "../api/runai.js";
 
 export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
+  // Define policies for each company
+  const company1Policies = [1, 2, 3, 10, 11, 16, 17];
+  const company2Policies = [4, 5, 6, 12, 13, 18, 19];
+  const company3Policies = [7, 8, 9, 14, 15, 20, 21];
+
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [csvData, setCsvData] = useState([]);
   const [addonNames, setAddonNames] = useState([]);
   const [comparisonResult, setComparisonResult] = useState([]);
-  async function getpred(){
-    const result  = await runPythonScript();
-    console.log("from getpred",result)
+  async function getpred() {
+    const result = await runPythonScript();
+    console.log("from getpred", result)
   }
 
   function handleButtonClick(_) {
@@ -152,26 +157,102 @@ export default function Compare() {
 
                 // Set the calculated premium for this policy
                 filteredData[i].premium = premium;
+                setComparisonResult(
+                  filteredData.map((arr, index) => {
+                    let policy_addons = arr["policy"] == 1 ? [1, 2, 3.1, 5.2, 7, 10, 65, 66, 68, 70] :
+                      arr["policy"] == 2 ? [1, 2, 4, 6, 8, 11, 65, 67, 69, 71] :
+                        arr["policy"] == 3 ? [1, 2, 3.2, 5.1, 9, 11, 65, 66, 67, 70] :
+                          arr["policy"] == 4 ? [1, 2, 4, 7, 8, 10, 65, 68, 69, 71] :
+                            arr["policy"] == 5 ? [1, 2, 3.1, 6, 9, 10, 65, 66, 69, 70] :
+                              arr["policy"] == 6 ? [1, 2, 5.2, 7, 8, 11, 65, 67, 68, 71] :
+                                arr["policy"] == 7 ? [1, 2, 3.2, 6, 8, 10, 65, 66, 67, 69] :
+                                  arr["policy"] == 8 ? [1, 2, 4, 5.1, 9, 11, 65, 68, 70, 71] :
+                                    arr["policy"] == 9 ? [1, 2, 3.1, 7, 8, 11, 65, 66, 69, 71] :
+                                      arr["policy"] == 10 ? [1, 2, 4, 6, 9, 10, 65, 67, 68, 70] :
+                                        arr["policy"] == 11 ? [1, 2, 3.2, 5.2, 7, 11, 65, 66, 67, 71] :
+                                          arr["policy"] == 12 ? [1, 2, 4, 6, 8, 9, 65, 68, 69, 70] :
+                                            arr["policy"] == 13 ? [1, 2, 3.1, 6, 7, 11, 65, 66, 70, 71] :
+                                              arr["policy"] == 14 ? [1, 2, 4, 5.1, 8, 10, 65, 67, 69, 70] :
+                                                arr["policy"] == 15 ? [1, 2, 3.2, 6, 9, 10, 65, 66, 68, 71] :
+                                                  arr["policy"] == 16 ? [1, 2, 3.1, 7, 9, 12, 66, 68, 69, 71] :
+                                                    arr["policy"] == 17 ? [1, 2, 4, 8, 11, 12, 67, 68, 70, 71] :
+                                                      arr["policy"] == 18 ? [1, 2, 5.1, 6, 10, 12, 66, 67, 69, 70] :
+                                                        arr["policy"] == 19 ? [1, 2, 3.2, 8, 11, 12, 66, 68, 70, 71] :
+                                                          arr["policy"] == 20 ? [1, 2, 4, 6, 9, 12, 67, 69, 70, 71] :
+                                                            arr["policy"] == 21 ? [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69] : []
+
+                    return (
+                      <div key={index} className="filteredPolicies">
+                        <h1>{arr["policy"]}</h1>
+                        <h2>
+                          {arr["policy"] in company1Policies ? "Himalayan Life Insurance" :
+                            arr["policy"] in company2Policies ? "Life Insurance Corporation Nepal" :
+                              arr["policy"] in company3Policies ? "Nepal Life" : ""
+                          }
+                        </h2>
+                        Premium: {arr["premium"]}. CSR: {
+                          arr["policy"] in company1Policies ? 83 :
+                            arr["policy"] in company2Policies ? 95 :
+                              arr["policy"] in company3Policies ? 87 :
+                                0
+                        }. Addons: {
+                          policy_addons.map((addon, index) => {
+                            let addonName = ""
+                            if (addon == 1) {
+                              addonName = "Accident Death Benefit"
+                            } else if (addon == 2) {
+                              addonName = "Termrider"
+                            } else if (addon == 3) {
+                              addonName = "Critical Illness Payout"
+                            } else if (addon == 4) {
+                              addonName = "Spouse Rider"
+                            } else if (addon == 5) {
+                              addonName = "Disability Payout"
+                            } else if (addon == 6) {
+                              addonName = "Child Education Rider"
+                            } else if (addon == 7) {
+                              addonName = "Hospital Rider"
+                            } else if (addon == 8) {
+                              addonName = "Time Extension Rider"
+                            } else if (addon == 9) {
+                              addonName = "Funeral Expense Rider"
+                            } else if (addon == 10) {
+                              addonName = "Employment Loss No Premium Rider"
+                            } else if (addon == 11) {
+                              addonName = "Travel Add-on"
+                            } else if (addon == 12) {
+                              addonName = "Premium Return in Term Life"
+                            } else if (addon == 65) {
+                              addonName = "Loan Against Insured Amount"
+                            } else if (addon == 66) {
+                              addonName = "Grace Period for Pay"
+                            } else if (addon == 67) {
+                              addonName = "Discount for Salaried Employees"
+                            } else if (addon == 68) {
+                              addonName = "Online Discount"
+                            } else if (addon == 69) {
+                              addonName = "Free Annual Health Checkup Whole Body"
+                            } else if (addon == 70) {
+                              addonName = "Free Lookup Period"
+                            } else if (addon == 71) {
+                              addonName = "Policy Conversion"
+                            }
+                            return <span key={index}> {addonName} </span>
+                          })
+                        }
+                      </div>
+                    );
+                  })
+                )
               })
               .catch((error) => console.error("Error fetching CSV:", error));
           })
           .catch((error) => console.error("Error fetching loading charge:", error));
       }
 
-       
-    setComparisonResult(
-      filteredData.map((arr, index) => {
-        console.log("This", arr)
-        return (
-          <div key={index} className="filteredPolicies">
-            <h1>{arr["policy"]}</h1>
-            Premium: {arr["premium"]}. CSR: {}. Addons: {}
-          </div>
-        );
-      })
-    )
+
     }
-   
+
 
   }, [formData, selectedAddons]);  // Add selectedAddons to trigger calculation when it changes
 
@@ -388,10 +469,6 @@ function calculateAddonsCost(FormData, selectedAddons) {
 function calculateLoadingCharge(filteredData, term) {
   let loadingCharge = 1; // Default loading charge
 
-  // Define policies for each company
-  const company1Policies = [1, 2, 3, 10, 11, 16, 17];
-  const company2Policies = [4, 5, 6, 12, 13, 18, 19];
-  const company3Policies = [7, 8, 9, 14, 15, 20, 21];
 
   // Define loading charges for payment methods
   const loadingData = {
