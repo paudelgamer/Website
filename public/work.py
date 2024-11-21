@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-# Specify the path to your CSV file on your computer
-file_path = 'C:/Users/paude/Desktop/New folder/money2.csv'
-money2_data = pd.read_csv(file_path)
+# Correct file path
+file_path = 'C:/Users/paude/Desktop/term.csv'  
+term_data = pd.read_csv(file_path)
 
 # Define scaling ranges for the requested adjustments
 scaling_ranges = {
@@ -12,7 +12,7 @@ scaling_ranges = {
 }
 
 # Determine min and max values for age and term from the data
-min_age, max_age = money2_data['Age'].min(), money2_data['Age'].max()
+min_age, max_age = term_data['Age'].min(), term_data['Age'].max()
 min_term, max_term = 5, 52  # Assuming term ranges from 5 to 52
 
 # Define a function to calculate the scaling factor
@@ -24,7 +24,7 @@ def calculate_variation_scaled(age, term, scale_min, scale_max):
 
 # Generate and save the adjusted CSV files for each scaling range
 for file_name, (scale_min, scale_max) in scaling_ranges.items():
-    adjusted_data = money2_data.copy()
+    adjusted_data = term_data.copy()
     
     # Apply the scaling for each term
     for term in range(min_term, max_term + 1):
@@ -40,6 +40,6 @@ for file_name, (scale_min, scale_max) in scaling_ranges.items():
     adjusted_data = adjusted_data.round(3)
     
     # Save each adjusted file to your specified folder
-    new_file_path = f'C:/Users/paude/Desktop/New folder/{file_name}_money2.csv'
+    new_file_path = f'C:/Users/paude/Desktop/{file_name}_term.csv'
     adjusted_data.to_csv(new_file_path, index=False)
     print(f"Saved {new_file_path}")
