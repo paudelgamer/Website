@@ -1,5 +1,6 @@
 "use client";
 import "./page.css";
+import path from "path";
 import { Children } from "react";
 import { useEffect, useState } from "react";
 import papa from "papaparse";
@@ -24,13 +25,11 @@ export default function Compare() {
     const result = await runPythonScript();
     console.log("from getpred", result)
   }
-
   function handleButtonClick(_) {
-    console.log("run handleclick")
     setShowComparisonPage(!showComparisonPage);
     getData();
-    getpred();
-    console.log("ran handleclick")
+    getpred()
+    console.log("fetched udata")
   }
 
   const [formData, setFormData] = useState({
@@ -149,7 +148,6 @@ export default function Compare() {
 
                 // 5. Divide by 1000
                 premium = premium / 1000;
-
                 // 6. Add addons cost
                 const addonsCost = calculateAddonsCost(formData, selectedAddons);
                 premium += addonsCost;
@@ -263,7 +261,17 @@ export default function Compare() {
           .catch((error) => console.error("Error fetching loading charge:", error));
       }
 
-
+       
+    setComparisonResult(
+      filteredData.map((arr, index) => {
+        return (
+          <div key={index} className="filteredPolicies">
+            <h1>{arr["policy"]}</h1>
+            Premium: {arr?.premium ? arr.premium : 'N/A'}. CSR: {}. Addons: {}
+          </div>
+        );
+      })
+    )
     }
 
 

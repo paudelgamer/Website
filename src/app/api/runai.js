@@ -3,13 +3,14 @@
 
 import { exec } from "child_process";
 import path from "path";
-
+console.log('runai run')
 export async function runPythonScript() {
+  console.log("api run")
   const pythonScriptPath = path.join(process.cwd(), "AI", "poly2.py");
-  console.log("hello")
+  const command = `python3 ${pythonScriptPath} "${data}"}`;
   // Run the Python script using exec
   return new Promise((resolve, reject) => {
-    exec(`python3 ${pythonScriptPath}`, (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr) => {
       if (error) {
         reject(`Error executing Python script: ${error.message}`);
       }
@@ -19,4 +20,5 @@ export async function runPythonScript() {
       resolve(stdout);
     });
   });
+  console.log("api ran")
 }
