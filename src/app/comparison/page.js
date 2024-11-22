@@ -7,8 +7,6 @@ import { row } from "mathjs";
 import DataFilter from "./DataFilter";
 import "../api/runai.js";
 import { runPythonScript } from "../api/runai.js";
-//just simple fxn to calculate age from date
-//this Fxn works....better leave it that way
 
 export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
