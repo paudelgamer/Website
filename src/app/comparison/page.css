@@ -271,23 +271,34 @@ div.surrounddatafields {
   padding-top: 14vh;
 }
 
+.cardscompany {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
 .cardspolicynum {
-  position: absolute;
   top: 0;
   left: 0;
-  padding: 1.5vw;
-  transform: translateY(-100%);
+  font-size: 1.0rem;
+  padding: 1vw;
+  padding-top: 1.2rem;
+  padding-bottom: 0.8rem;
   color: var(--palewhite);
   font-weight: bold;
-  background-color: var(--secondaryA);
-  border-radius: 50%;
-  /* aspect-ratio: 1; */
-  width: 3.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1vw;
+  background-color: var(--secondary);
+  border-radius: 2rem;
+  display: inline-block;
 }
+
+.cardspolicynum::before {
+  content: "ID:";
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+  opacity: 0.7;
+  position: absolute;
+}
+
 
 .cardspremium {
   color: var(--palewhite);
@@ -306,6 +317,7 @@ div.surrounddatafields {
   padding-bottom: 0.8rem;
   display: inline-block;
   color: var(--tertiary);
+  font-size: 1rem;
   font-weight: bold;
   margin: auto 0.5vw;
   border-radius: 1.5vh;

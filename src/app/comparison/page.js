@@ -179,7 +179,6 @@ export default function Compare() {
                                                         arr["policy"] == 19 ? [1, 2, 3.2, 8, 11, 12, 66, 68, 70, 71] :
                                                           arr["policy"] == 20 ? [1, 2, 4, 6, 9, 12, 67, 69, 70, 71] :
                                                             arr["policy"] == 21 ? [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69] : []
-
                     // ADDONS FILTER
                     for (let j = 0; j < selectedAddons.length; j++) {
                       if (!policy_addons.includes(selectedAddons[j])) {
@@ -190,23 +189,23 @@ export default function Compare() {
                     let policy_num = arr["policy"]
                     return (
                       <div key={index} className="filteredPolicies">
-                        <h2>
+                        <div className="cardscompany">
                           {
                             (company1Policies.includes(policy_num)) ? "Himalayan Life Insurance" :
                               (company2Policies.includes(policy_num)) ? "Life Insurance Corporation Nepal" :
                                 (company3Policies.includes(policy_num)) ? "Nepal Life" : ""
                           }
-                        </h2>
-                        <div className="cardspolicynum">{policy_num}</div>
-                        <div className="cardspremium">Rs {Math.floor(arr["premium"] * 100) / 100} </div>
-                        <div className="cardscsr">{
-                          (company1Policies.includes(policy_num)) ? 83 :
-                            (company2Policies.includes(policy_num)) ? 95 :
-                              (company3Policies.includes(policy_num)) ? 87 : 0
-                        }
+                          <div className="cardscsr">{
+                            (company1Policies.includes(policy_num)) ? 83 :
+                              (company2Policies.includes(policy_num)) ? 95 :
+                                (company3Policies.includes(policy_num)) ? 87 : 0
+                          }
+                          </div>
+                          <div className="cardspolicynum">{policy_num}</div>
                         </div>
+                        <div className="cardspremium">Rs {Math.floor(arr["premium"] * 100) / 100} </div>
                         <div className="cardsaddons">
-                          Addons: {
+                          {
                             policy_addons.map((addon, index) => {
                               let addonName = ""
                               if (addon == 1) {
@@ -248,7 +247,9 @@ export default function Compare() {
                               } else if (addon == 71) {
                                 addonName = "Policy Conversion"
                               }
-                              return <span key={index}> {addonName} </span>
+                              return <span key={index} id={
+                                addon > 65 ? "addonPaid" : "addonFree"
+                              }> {addonName} </span>
                             })
                           }
                         </div>
@@ -262,17 +263,17 @@ export default function Compare() {
           .catch((error) => console.error("Error fetching loading charge:", error));
       }
 
-       
-    setComparisonResult(
-      filteredData.map((arr, index) => {
-        return (
-          <div key={index} className="filteredPolicies">
-            <h1>{arr["policy"]}</h1>
-            Premium: {arr?.premium ? arr.premium : 'N/A'}. CSR: {}. Addons: {}
-          </div>
-        );
-      })
-    )
+
+      setComparisonResult(
+        filteredData.map((arr, index) => {
+          return (
+            <div key={index} className="filteredPolicies">
+              <h1>{arr["policy"]}</h1>
+              Premium: {arr?.premium ? arr.premium : 'N/A'}. CSR: {}. Addons: {}
+            </div>
+          );
+        })
+      )
     }
 
 
@@ -559,7 +560,7 @@ function calculateInsuranceRebate(filteredData, FormData) {
   if (filteredData.policy >= 15 && filteredData.policy <= 21) {
     rebateAmount /= 10; // Reduce rebate to 10%
   }
-  
+
   return rebateAmount;
 }
 
