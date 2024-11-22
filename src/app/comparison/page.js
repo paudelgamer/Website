@@ -21,14 +21,15 @@ export default function Compare() {
   const [addonNames, setAddonNames] = useState([]);
   const [comparisonResult, setComparisonResult] = useState([]);
 
-  async function getpred() {
-    const result = await runPythonScript();
-    console.log("from getpred", result)
+  async function getpred(datastr) {
+    console.log("from getpred 1")
+    const result = await runPythonScript(datastr);
+    console.log("from getpred 2", result)
   }
   function handleButtonClick(_) {
     setShowComparisonPage(!showComparisonPage);
     getData();
-    getpred()
+    getpred('data1')
     console.log("fetched udata")
   }
 
@@ -196,15 +197,15 @@ export default function Compare() {
                                 (company3Policies.includes(policy_num)) ? "Nepal Life" : ""
                           }
                         </h2>
-                        <div class="cardspolicynum">{policy_num}</div>
-                        <div class="cardspremium">Rs {Math.floor(arr["premium"] * 100) / 100} </div>
-                        <div class="cardscsr">{
+                        <div className="cardspolicynum">{policy_num}</div>
+                        <div className="cardspremium">Rs {Math.floor(arr["premium"] * 100) / 100} </div>
+                        <div className="cardscsr">{
                           (company1Policies.includes(policy_num)) ? 83 :
                             (company2Policies.includes(policy_num)) ? 95 :
                               (company3Policies.includes(policy_num)) ? 87 : 0
                         }
                         </div>
-                        <div class="cardsaddons">
+                        <div className="cardsaddons">
                           Addons: {
                             policy_addons.map((addon, index) => {
                               let addonName = ""
