@@ -172,6 +172,7 @@ div.surrounddatafields {
   position: fixed;
   top: 0%;
   left: 0%;
+  z-index: 2;
   height: 100%;
   width: 100%;
   background-color: var(--palewhite);
@@ -262,4 +263,65 @@ div.surrounddatafields {
   border-radius: 2vw;
   width: 70%;
   background-color: var(--secondaryA);
+  position: relative;
+  color: var(--secondary);
+}
+
+#policyCards {
+  padding-top: 14vh;
+}
+
+.cardspolicynum {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1.5vw;
+  transform: translateY(-100%);
+  color: var(--palewhite);
+  font-weight: bold;
+  background-color: var(--secondaryA);
+  border-radius: 50%;
+  /* aspect-ratio: 1; */
+  width: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1vw;
+}
+
+.cardspremium {
+  color: var(--palewhite);
+  padding: 1rem;
+  font-weight: bold;
+  border-radius: 1.5vh;
+  display: inline-block;
+  background: linear-gradient(to right, var(--green), var(--secondary), var(--primary));
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
+}
+
+
+.cardscsr {
+  padding: 1rem;
+  padding-top: 1.2rem;
+  padding-bottom: 0.8rem;
+  display: inline-block;
+  color: var(--tertiary);
+  font-weight: bold;
+  margin: auto 0.5vw;
+  border-radius: 1.5vh;
+  background: var(--green);
+  color: var(--palewhite);
+  position: relative;
+}
+
+.cardscsr::before {
+  content: "CSR: ";
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+  opacity: 0.7;
+  position: absolute;
+}
+
+.cardscsr::after {
+  content: "%";
 }

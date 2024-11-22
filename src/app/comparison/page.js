@@ -21,6 +21,7 @@ export default function Compare() {
   const [csvData, setCsvData] = useState([]);
   const [addonNames, setAddonNames] = useState([]);
   const [comparisonResult, setComparisonResult] = useState([]);
+
   async function getpred() {
     const result = await runPythonScript();
     console.log("from getpred", result)
@@ -184,7 +185,6 @@ export default function Compare() {
                     let policy_num = arr["policy"]
                     return (
                       <div key={index} className="filteredPolicies">
-                        <h1>{policy_num}</h1>
                         <h2>
                           {
                             (company1Policies.includes(policy_num)) ? "Himalayan Life Insurance" :
@@ -192,57 +192,63 @@ export default function Compare() {
                                 (company3Policies.includes(policy_num)) ? "Nepal Life" : ""
                           }
                         </h2>
-                        Premium: {arr["premium"]}. CSR: {
+                        <div class="cardspolicynum">{policy_num}</div>
+                        <div class="cardspremium">Rs {Math.floor(arr["premium"] * 100) / 100} </div>
+                        <div class="cardscsr">{
                           (company1Policies.includes(policy_num)) ? 83 :
                             (company2Policies.includes(policy_num)) ? 95 :
                               (company3Policies.includes(policy_num)) ? 87 : 0
-                        }. Addons: {
-                          policy_addons.map((addon, index) => {
-                            let addonName = ""
-                            if (addon == 1) {
-                              addonName = "Accident Death Benefit"
-                            } else if (addon == 2) {
-                              addonName = "Termrider"
-                            } else if (addon == 3) {
-                              addonName = "Critical Illness Payout"
-                            } else if (addon == 4) {
-                              addonName = "Spouse Rider"
-                            } else if (addon == 5) {
-                              addonName = "Disability Payout"
-                            } else if (addon == 6) {
-                              addonName = "Child Education Rider"
-                            } else if (addon == 7) {
-                              addonName = "Hospital Rider"
-                            } else if (addon == 8) {
-                              addonName = "Time Extension Rider"
-                            } else if (addon == 9) {
-                              addonName = "Funeral Expense Rider"
-                            } else if (addon == 10) {
-                              addonName = "Employment Loss No Premium Rider"
-                            } else if (addon == 11) {
-                              addonName = "Travel Add-on"
-                            } else if (addon == 12) {
-                              addonName = "Premium Return in Term Life"
-                            } else if (addon == 65) {
-                              addonName = "Loan Against Insured Amount"
-                            } else if (addon == 66) {
-                              addonName = "Grace Period for Pay"
-                            } else if (addon == 67) {
-                              addonName = "Discount for Salaried Employees"
-                            } else if (addon == 68) {
-                              addonName = "Online Discount"
-                            } else if (addon == 69) {
-                              addonName = "Free Annual Health Checkup Whole Body"
-                            } else if (addon == 70) {
-                              addonName = "Free Lookup Period"
-                            } else if (addon == 71) {
-                              addonName = "Policy Conversion"
-                            }
-                            return <span key={index}> {addonName} </span>
-                          })
                         }
+                        </div>
+                        <div class="cardsaddons">
+                          Addons: {
+                            policy_addons.map((addon, index) => {
+                              let addonName = ""
+                              if (addon == 1) {
+                                addonName = "Accident Death Benefit"
+                              } else if (addon == 2) {
+                                addonName = "Termrider"
+                              } else if (addon == 3) {
+                                addonName = "Critical Illness Payout"
+                              } else if (addon == 4) {
+                                addonName = "Spouse Rider"
+                              } else if (addon == 5) {
+                                addonName = "Disability Payout"
+                              } else if (addon == 6) {
+                                addonName = "Child Education Rider"
+                              } else if (addon == 7) {
+                                addonName = "Hospital Rider"
+                              } else if (addon == 8) {
+                                addonName = "Time Extension Rider"
+                              } else if (addon == 9) {
+                                addonName = "Funeral Expense Rider"
+                              } else if (addon == 10) {
+                                addonName = "Employment Loss No Premium Rider"
+                              } else if (addon == 11) {
+                                addonName = "Travel Add-on"
+                              } else if (addon == 12) {
+                                addonName = "Premium Return in Term Life"
+                              } else if (addon == 65) {
+                                addonName = "Loan Against Insured Amount"
+                              } else if (addon == 66) {
+                                addonName = "Grace Period for Pay"
+                              } else if (addon == 67) {
+                                addonName = "Discount for Salaried Employees"
+                              } else if (addon == 68) {
+                                addonName = "Online Discount"
+                              } else if (addon == 69) {
+                                addonName = "Free Annual Health Checkup Whole Body"
+                              } else if (addon == 70) {
+                                addonName = "Free Lookup Period"
+                              } else if (addon == 71) {
+                                addonName = "Policy Conversion"
+                              }
+                              return <span key={index}> {addonName} </span>
+                            })
+                          }
+                        </div>
                       </div>
-                    );
+                    )
                   })
                 )
               })
