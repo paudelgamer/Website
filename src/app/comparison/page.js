@@ -4,7 +4,7 @@ import path from "path";
 import { Children } from "react";
 import { useEffect, useState } from "react";
 import papa from "papaparse";
-import { row } from "mathjs";
+import { isInteger, row } from "mathjs";
 import DataFilter from "./DataFilter";
 import "../api/runai.js";
 import { runPythonScript } from "../api/runai.js";
@@ -22,15 +22,13 @@ export default function Compare() {
   const [comparisonResult, setComparisonResult] = useState([]);
 
   async function getpred(datastr) {
-    console.log("from getpred 1")
     const result = await runPythonScript(datastr);
-    console.log("from getpred 2", result)
+    console.log(result)
   }
   function handleButtonClick(_) {
     setShowComparisonPage(!showComparisonPage);
     getData();
     getpred('data1')
-    console.log("fetched udata")
   }
 
   const [formData, setFormData] = useState({

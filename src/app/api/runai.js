@@ -1,4 +1,3 @@
-
 "use server"; // Tells Next.js that this logic should run on the server
 
 import { exec } from "child_process";
@@ -21,5 +20,4 @@ export async function runPythonScript(datastr) {
       resolve(stdout);
     });
   });
-  console.log("api ran")
 }
