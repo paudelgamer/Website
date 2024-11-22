@@ -283,10 +283,10 @@ export default function Compare() {
     const addonNumber = event.target.id;
 
     // If checkbox is checked, add to array; if unchecked, remove from array
-    setSelectedAddons(prevSelectedAddons =>
+    setselectedAddons(prevselectedAddons =>
       event.target.checked
-        ? [...prevSelectedAddons, addonNumber]
-        : prevSelectedAddons.filter(addon => addon !== addonNumber)
+        ? [...prevselectedAddons, addonNumber]
+        : prevselectedAddons.filter(addon => addon !== addonNumber)
     );
   };
 
