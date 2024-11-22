@@ -158,6 +158,7 @@ export default function Compare() {
 
                 // Set the calculated premium for this policy
                 filteredData[i].premium = premium;
+
                 setComparisonResult(
                   filteredData.map((arr, index) => {
                     let policy_addons = arr["policy"] == 1 ? [1, 2, 3.1, 5.2, 7, 10, 65, 66, 68, 70] :
@@ -181,6 +182,13 @@ export default function Compare() {
                                                         arr["policy"] == 19 ? [1, 2, 3.2, 8, 11, 12, 66, 68, 70, 71] :
                                                           arr["policy"] == 20 ? [1, 2, 4, 6, 9, 12, 67, 69, 70, 71] :
                                                             arr["policy"] == 21 ? [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69] : []
+
+                    // ADDONS FILTER
+                    for (let j = 0; j < selectedAddons.length; j++) {
+                      if (!policy_addons.includes(selectedAddons[j])) {
+                        filteredData.splice(i, 1);
+                      }
+                    }
 
                     let policy_num = arr["policy"]
                     return (
@@ -625,15 +633,15 @@ function findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm) {
   const ageRow = tabRateData.find(row => parseInt(row.Age) === age);
 
   if (!ageRow) {
-      console.error(`Age ${age} not found in the tab rate data.`);
-      return null; // Return null if the age isn't found
+    console.error(`Age ${age} not found in the tab rate data.`);
+    return null; // Return null if the age isn't found
   }
 
   const insuredTermColumn = Object.keys(ageRow).find(key => parseInt(key) === insuredTerm);
 
   if (!insuredTermColumn) {
-      console.error(`Insured term ${insuredTerm} not found in the tab rate data.`);
-      return null; // Return null if the insured term isn't found
+    console.error(`Insured term ${insuredTerm} not found in the tab rate data.`);
+    return null; // Return null if the insured term isn't found
   }
 
   return parseFloat(ageRow[insuredTermColumn]);
@@ -644,15 +652,15 @@ function findTabRateForTermLife(tabRateData, age, policyNumber) {
   const ageRow = tabRateData.find(row => parseInt(row.Index) === age);
 
   if (!ageRow) {
-      console.error(`Age ${age} not found in the tab rate data.`);
-      return null; // Return null if the age isn't found
+    console.error(`Age ${age} not found in the tab rate data.`);
+    return null; // Return null if the age isn't found
   }
 
   const policyColumn = Object.keys(ageRow).find(key => parseInt(key) === policyNumber);
 
   if (!policyColumn) {
-      console.error(`Policy number ${policyNumber} not found in the tab rate data.`);
-      return null; // Return null if the policy number isn't found
+    console.error(`Policy number ${policyNumber} not found in the tab rate data.`);
+    return null; // Return null if the policy number isn't found
   }
 
   return parseFloat(ageRow[policyColumn]);
@@ -663,22 +671,22 @@ async function calculateTabRate(policyNumber, age, insuredTerm) {
   const tabRateData = await fetchTabRateData(policyNumber);
 
   if (!tabRateData) {
-      return null;
+    return null;
   }
 
   // Determine policy type
   if (policyNumber >= 1 && policyNumber <= 9) {
-      // Endowment
-      return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
+    // Endowment
+    return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
   } else if (policyNumber >= 10 && policyNumber <= 15) {
-      // Money Back
-      return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
+    // Money Back
+    return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
   } else if (policyNumber >= 16 && policyNumber <= 21) {
-      // Term Life
-      return findTabRateForTermLife(tabRateData, age, policyNumber);
+    // Term Life
+    return findTabRateForTermLife(tabRateData, age, policyNumber);
   } else {
-      console.error(`Invalid policy number ${policyNumber}.`);
-      return null;
+    console.error(`Invalid policy number ${policyNumber}.`);
+    return null;
   }
 }
 
@@ -686,27 +694,27 @@ async function calculateTabRate(policyNumber, age, insuredTerm) {
 async function fetchTabRateData(policyNumber) {
   let url;
   if (policyNumber >= 1 && policyNumber <= 9) {
-      // Fetch Endowment data
-      url = '/path/to/endowment/data.csv';
+    // Fetch Endowment data
+    url = '/path/to/endowment/data.csv';
   } else if (policyNumber >= 10 && policyNumber <= 15) {
-      // Fetch Money Back data
-      url = '/path/to/moneyback/data.csv';
+    // Fetch Money Back data
+    url = '/path/to/moneyback/data.csv';
   } else if (policyNumber >= 16 && policyNumber <= 21) {
-      // Fetch Term Life data
-      url = '/path/to/termlife/data.csv';
+    // Fetch Term Life data
+    url = '/path/to/termlife/data.csv';
   } else {
-      console.error(`Invalid policy number ${policyNumber}.`);
-      return null;
+    console.error(`Invalid policy number ${policyNumber}.`);
+    return null;
   }
 
   try {
-      const response = await fetch(url);
-      const csvData = await response.text();
-      const parsedData = papa.parse(csvData, { header: true, skipEmptyLines: true });
-      return parsedData.data;
+    const response = await fetch(url);
+    const csvData = await response.text();
+    const parsedData = papa.parse(csvData, { header: true, skipEmptyLines: true });
+    return parsedData.data;
   } catch (error) {
-      console.error(`Failed to fetch data for policy number ${policyNumber}:`, error);
-      return null;
+    console.error(`Failed to fetch data for policy number ${policyNumber}:`, error);
+    return null;
   }
 }
 
