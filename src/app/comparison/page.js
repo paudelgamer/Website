@@ -541,6 +541,10 @@ function calculateInsuranceRebate(filteredData, FormData) {
     return 0; // No rebate if policy number is invalid
   }
 
+  if (filteredData.policy >= 15 && filteredData.policy <= 21) {
+    rebateAmount /= 10; // Reduce rebate to 10%
+  }
+  
   return rebateAmount;
 }
 
