@@ -335,8 +335,8 @@ export default function Compare() {
                 </span>
                 <span id="type">
                   <input type="radio" name="type" value="1" /> Endowment
-                  <input type="radio" name="type" value="2" /> Term Life
-                  <input type="radio" name="type" value="3" /> Money
+                  <input type="radio" name="type" value="3" /> Term Life
+                  <input type="radio" name="type" value="2" /> Money
                   Back
                 </span>
 
@@ -548,6 +548,9 @@ function getRebate(insuredAmount, rebateData, rebateKey) {
   return 0; // Default rebate if no range matches
 }
 
+
+
+/*
 // Function to fetch and parse CSV file data
 async function fetchTabRateData(policyNumber) {
   const csvDirectoryPath = `/AllPolicy`; // Use the correct path here for your static files
@@ -603,6 +606,97 @@ async function getTabRate(policyNumber, age, insuredTerm) {
     console.log(`Tab Rate: ${tabRate}`);
   } else {
     console.log('Tab Rate not found.');
+  }
+}
+*/
+
+// Function to find the Tab Rate for Endowment and Money Back policies
+function findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm) {
+  const ageRow = tabRateData.find(row => parseInt(row.Age) === age);
+
+  if (!ageRow) {
+      console.error(`Age ${age} not found in the tab rate data.`);
+      return null; // Return null if the age isn't found
+  }
+
+  const insuredTermColumn = Object.keys(ageRow).find(key => parseInt(key) === insuredTerm);
+
+  if (!insuredTermColumn) {
+      console.error(`Insured term ${insuredTerm} not found in the tab rate data.`);
+      return null; // Return null if the insured term isn't found
+  }
+
+  return parseFloat(ageRow[insuredTermColumn]);
+}
+
+// Function to find the Tab Rate for Term Life policies
+function findTabRateForTermLife(tabRateData, age, policyNumber) {
+  const ageRow = tabRateData.find(row => parseInt(row.Index) === age);
+
+  if (!ageRow) {
+      console.error(`Age ${age} not found in the tab rate data.`);
+      return null; // Return null if the age isn't found
+  }
+
+  const policyColumn = Object.keys(ageRow).find(key => parseInt(key) === policyNumber);
+
+  if (!policyColumn) {
+      console.error(`Policy number ${policyNumber} not found in the tab rate data.`);
+      return null; // Return null if the policy number isn't found
+  }
+
+  return parseFloat(ageRow[policyColumn]);
+}
+
+// Function to calculate the Tab Rate based on the policy type
+async function calculateTabRate(policyNumber, age, insuredTerm) {
+  const tabRateData = await fetchTabRateData(policyNumber);
+
+  if (!tabRateData) {
+      return null;
+  }
+
+  // Determine policy type
+  if (policyNumber >= 1 && policyNumber <= 9) {
+      // Endowment
+      return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
+  } else if (policyNumber >= 10 && policyNumber <= 15) {
+      // Money Back
+      return findTabRateForEndowmentOrMoneyBack(tabRateData, age, insuredTerm);
+  } else if (policyNumber >= 16 && policyNumber <= 21) {
+      // Term Life
+      return findTabRateForTermLife(tabRateData, age, policyNumber);
+  } else {
+      console.error(`Invalid policy number ${policyNumber}.`);
+      return null;
+  }
+}
+
+// Fetch the Tab Rate data based on policy type
+async function fetchTabRateData(policyNumber) {
+  let url;
+  if (policyNumber >= 1 && policyNumber <= 9) {
+      // Fetch Endowment data
+      url = '/path/to/endowment/data.csv';
+  } else if (policyNumber >= 10 && policyNumber <= 15) {
+      // Fetch Money Back data
+      url = '/path/to/moneyback/data.csv';
+  } else if (policyNumber >= 16 && policyNumber <= 21) {
+      // Fetch Term Life data
+      url = '/path/to/termlife/data.csv';
+  } else {
+      console.error(`Invalid policy number ${policyNumber}.`);
+      return null;
+  }
+
+  try {
+      const response = await fetch(url);
+      const csvData = await response.text();
+      const parsedData = papa.parse(csvData, { header: true, skipEmptyLines: true });
+      return parsedData.data;
+  } catch (error) {
+      console.error(`Failed to fetch data for policy number ${policyNumber}:`, error);
+      return null;
   }
 }
 
