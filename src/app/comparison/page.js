@@ -5,6 +5,7 @@ import "../api/runai.js";
 import papa from "papaparse";
 import { useEffect, useState } from "react";
 import DataFilter from "./DataFilter";
+import Calculator from "../components/calculator/calculator";
 
 export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
@@ -346,6 +347,7 @@ useEffect(() => {
                   })
                 }
               </div>
+              <Calculator income={formData.income} insured_amount={formData.insuredAmount}></Calculator>
             </div>
           </div>
         </>
