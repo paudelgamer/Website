@@ -32,8 +32,6 @@
 }
 
 
-
-
 .fattext {
   font-size: 1.5rem;
   color: var(--tertiary);
@@ -168,20 +166,24 @@ div.surrounddatafields {
   background-color: var(--primary);
 }
 
+.comparisonView{
+  display: flex;
+}
+
 #majorView {
-  position: fixed;
+  /* position: fixed;
   top: 0%;
-  left: 0%;
-  z-index: 2;
-  height: 100%;
-  width: 100%;
+  right: 0%;
+  z-index: 2; */
+  flex: 1;
   background-color: var(--palewhite);
   border-radius: 1vw;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  padding: 13vh;
+  padding-bottom: 13vh;
+  padding-left: 5vh;
+  padding-top: 13vh;
   font-weight: 500;
   color: var(--secondary);
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 #AddonAccept {
@@ -204,6 +206,16 @@ div.surrounddatafields {
   color: var(--secondary);
 }
 
+#addonPaid {
+  color: var(--green);
+  font-weight: bold;
+  border-radius: 2rem;
+  transition: 0.3s ease;
+}
+
+#addonPaid:last-child::after{
+  content: ""
+}
 .filterAddons input {
   display: none;
 }
@@ -256,10 +268,48 @@ div.surrounddatafields {
   align-items: center;
   gap: 1vw;
 }
+.cardsaddons{
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: fit-content;
+  padding: 1rem;
+  border-bottom: 1px solid var(--tertiary);
+  color: var(--secondary);
+  transition: 0.2s ease;
+}
+.cardsaddons:hover{
+  border-radius: 2rem;
+  border-bottom: 1px solid transparent;
+}
+.cardsaddonsTitle {
+  transition: 0.2s ease;
+  border-radius: 2rem;
+}
+.cardsaddons:hover .cardsaddonsTitle{
+  background-color: var(--secondary);
+  padding: 1rem;
+  border-bottom: 1px solid var(--tertiary);
+  color: var(--palewhite);
+}
+.cardsaddons:hover .cardsaddonscontent{
+  height: auto;
+  padding: 1rem;
+}
+
+
+.cardsaddonscontent {
+  height: 0;
+  overflow-y: hidden;
+  transition: 0.5s ease;
+  padding: 0rem;
+  font-weight: normal;
+}
+
 
 .filteredPolicies {
   margin: 0.2vw;
-  padding: 1vw;
+  padding: 3vw;
   border-radius: 2vw;
   width: 70%;
   background-color: var(--secondaryA);
@@ -268,7 +318,9 @@ div.surrounddatafields {
 }
 
 #policyCards {
+  flex: 3;
   padding-top: 14vh;
+  padding-left: 10vh;
 }
 
 .cardscompany {
@@ -333,6 +385,53 @@ div.surrounddatafields {
   opacity: 0.7;
   position: absolute;
 }
+
+.policyType {
+  padding: 1rem;
+  padding-top: 1.2rem;
+  padding-bottom: 0.8rem;
+  display: inline-block;
+  color: var(--tertiary);
+  font-size: 1rem;
+  font-weight: bold;
+  margin: auto 0.5vw;
+  border-radius: 1.5vh;
+  background: var(--green);
+  color: var(--palewhite);
+  position: relative;
+}
+
+.policyType::before {
+  content: "Policty Type: ";
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+  opacity: 0.7;
+  position: absolute;
+}
+
+.companyName {
+  padding: 1rem;
+  padding-top: 1.2rem;
+  padding-bottom: 0.8rem;
+  display: inline-block;
+  color: var(--tertiary);
+  font-size: 1rem;
+  font-weight: bold;
+  margin: auto 0.5vw;
+  border-radius: 1.5vh;
+  background: var(--green);
+  color: var(--palewhite);
+  position: relative;
+}
+
+.companyName::before {
+  content: "Company: ";
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+  opacity: 0.7;
+  position: absolute;
+}
+
 
 .cardscsr::after {
   content: "%";
