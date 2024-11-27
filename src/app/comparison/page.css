@@ -166,7 +166,7 @@ div.surrounddatafields {
   background-color: var(--primary);
 }
 
-.comparisonView{
+.comparisonView {
   display: flex;
 }
 
@@ -199,14 +199,37 @@ div.surrounddatafields {
 }
 
 .addonsNamesFree {
+  /* padding: 1.4vw; */
+  /* padding-top: 0.4rem; */
+  /* padding-bottom: 0.4rem; */
+  /* background-color: var(--secondaryA); */
   color: var(--secondary);
+  /* border-radius: 2rem; */
+  /* transition: 0.3s ease; */
+  /* width: fit-content; */
+  /* margin: 2vh 0vh; */
+}
+
+
+.addonsNamesPaid::after {
+  content: "$ Paid";
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  border-radius: 2rem;
+  padding: 0.5rem;
 }
 
 .addonsNamesPaid {
-  color: var(--green);
-  font-weight: bold;
-  border-radius: 2rem;
-  transition: 0.3s ease;
+  /* padding: 1.4vw; */
+  /* padding-top: 0.4rem; */
+  /* padding-bottom: 0.4rem; */
+  /* background-color: var(--secondary); */
+  color: var(--secondary);
+  /* border-radius: 2rem; */
+  /* transition: 0.3s ease; */
+  /* width: fit-content; */
+  /* margin: 2vh 0vh; */
 }
 
 .filterAddons input {
@@ -261,26 +284,75 @@ div.surrounddatafields {
   align-items: center;
   gap: 1vw;
 }
-.cardAddons{
-  font-size: 1.2rem;
+
+.cardAddons {
+  font-size: 1.4rem;
   font-weight: bold;
   width: fit-content;
-  margin: 2rem;
+  display: inline-block;
+  margin-top: 2rem;
   margin-left: 0rem;
   color: var(--secondary);
   transition: 0.2s ease;
 }
 
-.cardAddons:hover .cardAddonsContent{
+.cardAddons:hover .cardAddonsContent {
   height: auto;
-  padding: 2vw;
+  padding-top: 2vw;
+  opacity: 1;
 }
-.cardAddonsContent{
+
+.cardAddonsContent {
+  font-size: 1rem;
   height: 0;
+  opacity: 0;
+  width: 100%;
   border-radius: 1vw;
   transition: 0.3s ease;
   z-index: 3;
   overflow: hidden;
+}
+
+.cardDetails:hover .cardDetailsContent {
+  height: auto;
+  padding-top: 2vw;
+  opacity: 1;
+}
+
+.cardDetails {
+  font-size: 1.4rem;
+  font-weight: bold;
+  width: fit-content;
+  display: inline-block;
+  margin-top: 2rem;
+  margin-left: 0rem;
+  color: var(--secondary);
+  transition: 0.2s ease;
+}
+
+.cardDetailsContent {
+  font-size: 1rem;
+  height: 0;
+  opacity: 0;
+  width: 100%;
+  border-radius: 1vw;
+  transition: 0.3s ease;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.cardAddonsTopic {
+  padding: 1vh;
+  width: fit-content;
+  border-radius: 1vw;
+  background-color: var(--palewhiteA);
+}
+
+.cardDetailsTopic {
+  padding: 1vh;
+  width: fit-content;
+  border-radius: 1vw;
+  background-color: var(--palewhiteA);
 }
 
 .filteredPolicies {
@@ -303,6 +375,17 @@ div.surrounddatafields {
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+.cardPolicyDetails {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--secondary);
+}
+
+.cardPolicyDetails::before {
+  content: "ⓘ ";
 }
 
 .cardPolicyId {
@@ -330,8 +413,17 @@ div.surrounddatafields {
 
 
 .cardCost {
+  display: inline-block;
+}
+
+.cardAddonCost,
+.cardPremiumCost {
+  min-width: 5rem;
+  position: relative;
   color: var(--palewhite);
   padding: 1rem;
+  padding-top: 1.2rem;
+  padding-bottom: 0.8rem;
   margin-top: 2rem;
   font-weight: bold;
   border-radius: 1.5vh;
@@ -339,33 +431,44 @@ div.surrounddatafields {
   background: linear-gradient(to right, var(--green), var(--secondary), var(--primary));
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
 }
-.cardAddonCost, .cardPremiumCost{
-  display: inline-block;
-  min-width: 2rem;
+
+.cardAddonCost::after,
+.cardPremiumCost::after {
+  content: "Rs.";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+  border-radius: 50%;
+  background-color: var(--green);
+  padding: 0.5rem;
 }
 
-.cardAddonCost{
-  margin-left: 1rem;
-}
-.cardPremiumCost{
-  margin-right: 1rem;
+.cardAddonCost {
+  margin: auto 0.5vw;
 }
 
-.cardPremiumCost::before{
+.cardPremiumCost {
+  margin: auto 0.5vw;
+}
+
+.cardPremiumCost::before {
   content: "Premium: ";
   font-size: 0.8em;
   transform: translateY(-100%);
   position: absolute;
   opacity: 0.6;
 }
-.cardAddonCost::before{
+
+.cardAddonCost::before {
   content: "Premium: ";
   font-size: 0.8em;
   transform: translateY(-100%);
   position: absolute;
   opacity: 0.6;
 }
-.cardAddonCost::before{
+
+.cardAddonCost::before {
   content: "Addon: ";
   font-size: 0.8em;
   opacity: 0.6;

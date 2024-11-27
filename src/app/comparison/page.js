@@ -62,6 +62,7 @@ export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
 
   const [selectedAddons, setSelectedAddons] = useState([]);
+  const [addonsChoice, setAddonsChoice] = useState(0);
   const [addonData, setAddonData] = useState([]);
   const [comparisonResult, setComparisonResult] = useState([]);
 
@@ -222,11 +223,9 @@ export default function Compare() {
   }, []);
 
   useEffect(() => {
-    console.log(formData);
 
     if (formData.name !== "") {
       let filteredData = DataFilter(formData);
-      console.log("FILTERERREREREED", filteredData);
       // Process each policy
       filteredData = filteredData
         .map((policyData) => {
@@ -271,7 +270,40 @@ export default function Compare() {
         .filter(Boolean); // Remove null entries (policies that don't match)
 
       // Update the comparison result
-
+      // Details about policies
+      let details = {
+        1: "This policy is for the first year of your insurance coverage.",
+        2: "This policy is for the second year of your insurance coverage.",
+        3: "This policy is for the third year of your insurance coverage.",
+        4: "This policy is for the fourth year of your insurance coverage.",
+        5: "This policy is for the fifth year of your insurance coverage.",
+        6: "This policy is for the sixth year of your insurance coverage.",
+        7: "This policy is for the seventh year of your insurance coverage.",
+        8: "This policy is for the eighth year of your insurance coverage.",
+        9: "This policy is for the ninth year of your insurance coverage.",
+        10: "This policy is for the tenth year of your insurance coverage.",
+        11: "This policy is for the eleventh year of your insurance coverage.",
+        12: "This policy is for the twelfth year of your insurance coverage.",
+        13: "This policy is for the thirteenth year of your insurance coverage.",
+        14: "This policy is for the fourteenth year of your insurance coverage.",
+        15: "This policy is for the fifteenth year of your insurance coverage.",
+        16: "This policy is for the sixteenth year of your insurance coverage.",
+        17: "This policy is for the seventeenth year of your insurance coverage.",
+        18: "This policy is for the eighteenth year of your insurance coverage.",
+        19: "This policy is for the nineteenth year of your insurance coverage.",
+        20: "This policy is for the twentieth year of your insurance coverage.",
+        21: "This policy is for the twenty-first year of your insurance coverage."
+      };
+      let perTermPhrase = "";
+      if (formData.term == "0.083") {
+        perTermPhrase = " per month";
+      } else if (formData.term == "0.25") {
+        perTermPhrase = " per quarter";
+      } else if (formData.term == "0.5") {
+        perTermPhrase = " per half-year";
+      } else if (formData.term == "1") {
+        perTermPhrase = " per year";
+      }
 
       setComparisonResult(
         filteredData.map((policy, index) => (
@@ -280,45 +312,71 @@ export default function Compare() {
               {policy.policyName}
               <span className="cardPolicyId">{policy.policy}</span>
             </h1>
+            <div className="cardPolicyDetails">{details[policy.policy]}</div>
             <div className="cardCompanyName">{policy.companyName}</div>
             <div className="cardCSR">
-              CSR: {policy.csr ? policy.csr : "N/A"}
+              CSR: {policy.csr ? policy.csr : "0"}
             </div>
             {/* {selectedAddons.join(", ")}. AddonCost:{" "} */}
             <div className="cardCost">
               <div className="cardPremiumCost">
                 {policy.premium ? policy.premium : "0"}
+                {perTermPhrase}
               </div>
               <div className="cardAddonCost">
                 {policy.addonCost ? policy.addonCost : "0"}
+                {perTermPhrase}
               </div>
             </div>
 
             <div className="cardAddons">
-              Addons:
+              <div className="cardAddonsTopic">
+                Addons
+              </div>
               <div className="cardAddonsContent">
-              {policyAddons[policy.policy].map((element, index) => {
-                if (element < 65) {
-                  return (
-                    <div key={index} className="addonsNamesPaid">
-                      {addonIndNames[element]}
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div key={index} className="addonsNamesFree">
-                      {addonIndNames[element]}
-                    </div>
-                  );
+                {
+                  policyAddons[policy.policy].map((element, index) => {
+                    if (element < 65) {
+                      return (
+                        <div key={index} className="addonsNamesPaid">
+                          {addonIndNames[element]}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div key={index} className="addonsNamesFree">
+                          {addonIndNames[element]}
+                        </div>
+                      );
+                    }
+                  })
                 }
-              })}
+              </div>
+            </div><br />
+
+            <div className="cardDetails">
+              <div className="cardDetailsTopic">
+                Details
+              </div>
+              <div className="cardDetailsContent">
+                {details[policy.policy]}
               </div>
             </div>
-          </div>
+
+          </div >
         ))
       );
     }
   }, [formData, selectedAddons]);
+  // useEffect(() => {
+  //   addonsChoice === 0 ? 
+  //   setComparisonResult(
+  //       
+  //     filteredData = filteredData
+  //       .map((policyData) => {
+  //       
+  //     }
+  //   }, [addonsChoice]);
 
   const handleAddonChange = (event) => {
     const addonNumber = event.target.id;
@@ -693,7 +751,7 @@ async function calculatePremium(formData, policyNumber) {
   */
 
   // Return both the premium base and total premium with addons
-  return Math.round(premiumPerTerm*100)/100;
+  return Math.round(premiumPerTerm * 100) / 100;
 }
 
 function findTabRateForEndowment(tabRateData, age, insuredTerm) {
