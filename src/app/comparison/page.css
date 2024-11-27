@@ -339,6 +339,37 @@ div.surrounddatafields {
   background: linear-gradient(to right, var(--green), var(--secondary), var(--primary));
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
 }
+.cardAddonCost, .cardPremiumCost{
+  display: inline-block;
+  min-width: 2rem;
+}
+
+.cardAddonCost{
+  margin-left: 1rem;
+}
+.cardPremiumCost{
+  margin-right: 1rem;
+}
+
+.cardPremiumCost::before{
+  content: "Premium: ";
+  font-size: 0.8em;
+  transform: translateY(-100%);
+  position: absolute;
+  opacity: 0.6;
+}
+.cardAddonCost::before{
+  content: "Premium: ";
+  font-size: 0.8em;
+  transform: translateY(-100%);
+  position: absolute;
+  opacity: 0.6;
+}
+.cardAddonCost::before{
+  content: "Addon: ";
+  font-size: 0.8em;
+  opacity: 0.6;
+}
 
 
 .cardCSR {

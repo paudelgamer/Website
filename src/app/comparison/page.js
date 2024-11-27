@@ -283,14 +283,14 @@ export default function Compare() {
             <div className="cardCompanyName">{policy.companyName}</div>
             <div className="cardCSR">
               CSR: {policy.csr ? policy.csr : "N/A"}
-            </div><br/>
+            </div>
             {/* {selectedAddons.join(", ")}. AddonCost:{" "} */}
             <div className="cardCost">
               <div className="cardPremiumCost">
-                Premium: {policy.premium ? policy.premium : "0"}
+                {policy.premium ? policy.premium : "0"}
               </div>
               <div className="cardAddonCost">
-                AddonCost: {policy.addonCost ? policy.addonCost : "0"}
+                {policy.addonCost ? policy.addonCost : "0"}
               </div>
             </div>
 
