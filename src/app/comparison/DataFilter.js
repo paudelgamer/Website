@@ -54,6 +54,35 @@ export default function DataFilter(data) {
   // Log the policies before filtering
   // console.log("Policies before filtering:", policies);
 
+  
+  const filteredPolicies = policies
+  .filter((policy) => {
+    if (userType === 0) return true; // No specific type, consider all policies
+    if (userType === 1 && policy.policy >= 1 && policy.policy <= 9) return true; // Endowment type
+    if (userType === 2 && policy.policy >= 10 && policy.policy <= 15) return true; // MoneyBack type
+    if (userType === 3 && policy.policy >= 16 && policy.policy <= 21) return true; // Term Life type
+    return false;
+  })
+  .filter((policy) => {
+    // Apply age, insured amount, and term filters
+    const maxYearsAllowed = policy.maxYears(userAge);
+
+    // Check if policy falls between 10-15 and requires exactTerms condition
+    const requiresExactTermsCheck = policy.policy >= 10 && policy.policy <= 15;
+
+    return (
+      userAge >= policy.minEntry &&
+      userAge <= policy.maxEntry &&
+      userInsuredAmount >= policy.min && // Compare insured amount
+      userInsuredAmount <= policy.max && // Compare insured amount
+      userInsuredTerm >= policy.minYears &&
+      userInsuredTerm <= maxYearsAllowed &&
+      (!requiresExactTermsCheck || policy.exactTerms?.includes(userInsuredTerm))
+    );
+  });
+
+
+  /*
   const filteredPolicies = policies
     .filter((policy) => {
       if (userType === 0) return true; // No specific type, consider all policies
@@ -62,6 +91,8 @@ export default function DataFilter(data) {
       if (userType === 3 && policy.policy >= 16 && policy.policy <= 21) return true; // Term Life type
       return false;
     })
+
+
     .filter((policy) => {
       // Apply age, insured amount, and term filters
       const maxYearsAllowed = policy.maxYears(userAge);
@@ -74,9 +105,14 @@ export default function DataFilter(data) {
         userInsuredTerm <= maxYearsAllowed
       );
     });
+*/
 
   // Log filtered policies to see which are available
   // console.log("Available Policies after Filtering:", filteredPolicies);
 
-  return filteredPolicies
+  // let newFilteredData=[];
+  // filteredPolicies.map((el, ind)=>{
+  //   newFilteredData.push({policy: el.policy})
+  // })
+  return filteredPolicies;
 }

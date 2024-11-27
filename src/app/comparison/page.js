@@ -226,7 +226,7 @@ export default function Compare() {
 
     if (formData.name !== "") {
       let filteredData = DataFilter(formData);
-
+      console.log("FILTERERREREREED", filteredData);
       // Process each policy
       filteredData = filteredData
         .map((policyData) => {
