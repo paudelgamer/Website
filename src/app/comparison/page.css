@@ -198,24 +198,17 @@ div.surrounddatafields {
   cursor: pointer;
 }
 
-#filterFree {
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* flex-wrap: wrap; */
-  margin-bottom: 1vw;
+.addonsNamesFree {
   color: var(--secondary);
 }
 
-#addonPaid {
+.addonsNamesPaid {
   color: var(--green);
   font-weight: bold;
   border-radius: 2rem;
   transition: 0.3s ease;
 }
 
-#addonPaid:last-child::after{
-  content: ""
-}
 .filterAddons input {
   display: none;
 }
@@ -268,44 +261,27 @@ div.surrounddatafields {
   align-items: center;
   gap: 1vw;
 }
-.cardsaddons{
-  margin-top: 2rem;
+.cardAddons{
   font-size: 1.2rem;
   font-weight: bold;
   width: fit-content;
-  padding: 1rem;
-  border-bottom: 1px solid var(--tertiary);
+  margin: 2rem;
+  margin-left: 0rem;
   color: var(--secondary);
   transition: 0.2s ease;
 }
-.cardsaddons:hover{
-  border-radius: 2rem;
-  border-bottom: 1px solid transparent;
-}
-.cardsaddonsTitle {
-  transition: 0.2s ease;
-  border-radius: 2rem;
-}
-.cardsaddons:hover .cardsaddonsTitle{
-  background-color: var(--secondary);
-  padding: 1rem;
-  border-bottom: 1px solid var(--tertiary);
-  color: var(--palewhite);
-}
-.cardsaddons:hover .cardsaddonscontent{
+
+.cardAddons:hover .cardAddonsContent{
   height: auto;
-  padding: 1rem;
+  padding: 2vw;
 }
-
-
-.cardsaddonscontent {
+.cardAddonsContent{
   height: 0;
-  overflow-y: hidden;
-  transition: 0.5s ease;
-  padding: 0rem;
-  font-weight: normal;
+  border-radius: 1vw;
+  transition: 0.3s ease;
+  z-index: 3;
+  overflow: hidden;
 }
-
 
 .filteredPolicies {
   margin: 0.2vw;
@@ -329,32 +305,34 @@ div.surrounddatafields {
   margin-bottom: 1rem;
 }
 
-.cardspolicynum {
+.cardPolicyId {
   top: 0;
   left: 0;
   font-size: 1.0rem;
-  padding: 1vw;
-  padding-top: 1.2rem;
-  padding-bottom: 0.8rem;
+  padding: 1.4vw;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
   color: var(--palewhite);
   font-weight: bold;
   background-color: var(--secondary);
   border-radius: 2rem;
   display: inline-block;
+  margin: 0vh 2vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
 }
 
-.cardspolicynum::before {
+.cardPolicyId::before {
   content: "ID:";
-  transform: translateY(-100%);
   font-size: 0.7rem;
+  margin-right: 1rem;
   opacity: 0.7;
-  position: absolute;
 }
 
 
-.cardspremium {
+.cardCost {
   color: var(--palewhite);
   padding: 1rem;
+  margin-top: 2rem;
   font-weight: bold;
   border-radius: 1.5vh;
   display: inline-block;
@@ -363,7 +341,7 @@ div.surrounddatafields {
 }
 
 
-.cardscsr {
+.cardCSR {
   padding: 1rem;
   padding-top: 1.2rem;
   padding-bottom: 0.8rem;
@@ -376,9 +354,10 @@ div.surrounddatafields {
   background: var(--green);
   color: var(--palewhite);
   position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
 }
 
-.cardscsr::before {
+.cardCSR::before {
   content: "CSR: ";
   transform: translateY(-100%);
   font-size: 0.7rem;
@@ -386,7 +365,7 @@ div.surrounddatafields {
   position: absolute;
 }
 
-.policyType {
+.cardCompanyName {
   padding: 1rem;
   padding-top: 1.2rem;
   padding-bottom: 0.8rem;
@@ -399,32 +378,10 @@ div.surrounddatafields {
   background: var(--green);
   color: var(--palewhite);
   position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 2000px var(--secondaryA);
 }
 
-.policyType::before {
-  content: "Policty Type: ";
-  transform: translateY(-100%);
-  font-size: 0.7rem;
-  opacity: 0.7;
-  position: absolute;
-}
-
-.companyName {
-  padding: 1rem;
-  padding-top: 1.2rem;
-  padding-bottom: 0.8rem;
-  display: inline-block;
-  color: var(--tertiary);
-  font-size: 1rem;
-  font-weight: bold;
-  margin: auto 0.5vw;
-  border-radius: 1.5vh;
-  background: var(--green);
-  color: var(--palewhite);
-  position: relative;
-}
-
-.companyName::before {
+.cardCompanyName::before {
   content: "Company: ";
   transform: translateY(-100%);
   font-size: 0.7rem;
@@ -433,6 +390,6 @@ div.surrounddatafields {
 }
 
 
-.cardscsr::after {
+.cardCsr::after {
   content: "%";
 }
