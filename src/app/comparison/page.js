@@ -7,14 +7,59 @@ import { useEffect, useState } from "react";
 import DataFilter from "./DataFilter";
 import Calculator from "../components/calculator/calculator";
 
+const addonIndNames = {
+  1: "Accidental Death Benefit",
+  2: "Termrider",
+  3.1: "Critical Illness Payout",
+  3.2: "Critical Illness No Premium Pay",
+  4: "Spouse Rider",
+  5.1: "Disability Payout",
+  5.2: "Disability No Premium Pay",
+  6: "Child Education Rider",
+  7: "Hospital Rider",
+  8: "Time Extension Rider",
+  9: "Funeral Expense Rider",
+  10: "Employment Loss No Premium Rider",
+  11: "Travel Add-on",
+  12: "Premium Return in Term Life",
+  65: "Loan Against Insured Amount",
+  66: "Grace Period for Pay",
+  67: "Discount for Salaried Employees",
+  68: "Online Discount",
+  69: "Free Annual Health Checkup Whole Body",
+  70: "Free Lookup Period",
+  71: "Policy Conversion",
+};
+const policyAddons = {
+  1: [1, 2, 3.1, 5.2, 7, 10, 65, 66, 68, 70],
+  2: [1, 2, 4, 6, 8, 11, 65, 67, 69, 71],
+  3: [1, 2, 3.2, 5.1, 9, 11, 65, 66, 67, 70],
+  4: [1, 2, 4, 7, 8, 10, 65, 68, 69, 71],
+  5: [1, 2, 3.1, 6, 9, 10, 65, 66, 69, 70],
+  6: [1, 2, 5.2, 7, 8, 11, 65, 67, 68, 71],
+  7: [1, 2, 3.2, 6, 8, 10, 65, 66, 67, 69],
+  8: [1, 2, 4, 5.1, 9, 11, 65, 68, 70, 71],
+  9: [1, 2, 3.1, 7, 8, 11, 65, 66, 69, 71],
+  10: [1, 2, 4, 6, 9, 10, 65, 67, 68, 70],
+  11: [1, 2, 3.2, 5.2, 7, 11, 65, 66, 67, 71],
+  12: [1, 2, 4, 6, 8, 9, 65, 68, 69, 70],
+  13: [1, 2, 3.1, 6, 7, 11, 65, 66, 70, 71],
+  14: [1, 2, 4, 5.1, 8, 10, 65, 67, 69, 70],
+  15: [1, 2, 3.2, 6, 9, 10, 65, 66, 68, 71],
+  16: [1, 2, 3.1, 7, 9, 12, 66, 68, 69, 71],
+  17: [1, 2, 4, 8, 11, 12, 67, 68, 70, 71],
+  18: [1, 2, 5.1, 6, 10, 12, 66, 67, 69, 70],
+  19: [1, 2, 3.2, 8, 11, 12, 66, 68, 70, 71],
+  20: [1, 2, 4, 6, 9, 12, 67, 69, 70, 71],
+  21: [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69],
+};
+
+const company1Policies = [1, 2, 3, 10, 11, 16, 17];
+const company2Policies = [4, 5, 6, 12, 13, 18, 19];
+const company3Policies = [7, 8, 9, 14, 15, 20, 21];
+
 export default function Compare() {
   const [showComparisonPage, setShowComparisonPage] = useState(true);
-
-
-  const company1Policies = [1, 2, 3, 10, 11, 16, 17];
-  const company2Policies = [4, 5, 6, 12, 13, 18, 19];
-  const company3Policies = [7, 8, 9, 14, 15, 20, 21];
-
 
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [addonData, setAddonData] = useState([]);
@@ -38,7 +83,6 @@ export default function Compare() {
     // occupation: "",
   });
 
-
   function getData() {
     const nameElement = document.getElementById("nameField");
     const insuredTerm = nameElement.parentElement.children[1].value;
@@ -46,7 +90,7 @@ export default function Compare() {
     const income = nameElement.parentElement.children[3].value;
     const term = document.querySelector('input[name="term"]:checked')?.value;
     const gender = document.querySelector(
-      'input[name="gender"]:checked',
+      'input[name="gender"]:checked'
     )?.value;
 
     const type = document.querySelector('input[name="type"]:checked')?.value;
@@ -72,7 +116,7 @@ export default function Compare() {
         insuredTerm, //10, 15...
         insuredAmount,
         income,
-        type: (type == 1 | type == 2 | type == 3) ? type : 0,
+        type: (type == 1) | (type == 2) | (type == 3) ? type : 0,
         gender,
         phoneNumber,
         age,
@@ -82,124 +126,216 @@ export default function Compare() {
     }
   }
 
+  useEffect(() => {
+    const hardcodedData = [
+      {
+        "Add-on Number": "1",
+        "Add-on Name": "Accidental Death Benefit",
+        Costper1k: 1,
+      },
+      { "Add-on Number": "2", "Add-on Name": "Termrider", Costper1k: 5 },
+      {
+        "Add-on Number": "3.1",
+        "Add-on Name": "Critical Illness Payout",
+        Costper1k: 2,
+      },
+      {
+        "Add-on Number": "3.2",
+        "Add-on Name": "Critical Illness No Premium Pay",
+        Costper1k: 1,
+      },
+      { "Add-on Number": "4", "Add-on Name": "Spouse Rider", Costper1k: 10 },
+      {
+        "Add-on Number": "5.1",
+        "Add-on Name": "Disability Payout",
+        Costper1k: 2,
+      },
+      {
+        "Add-on Number": "5.2",
+        "Add-on Name": "Disability No Premium Pay",
+        Costper1k: 1,
+      },
+      {
+        "Add-on Number": "6",
+        "Add-on Name": "Child Education Rider",
+        Costper1k: 1,
+      },
+      { "Add-on Number": "7", "Add-on Name": "Hospital Rider", Costper1k: 3 },
+      {
+        "Add-on Number": "8",
+        "Add-on Name": "Time Extension Rider",
+        Costper1k: 1,
+      },
+      {
+        "Add-on Number": "9",
+        "Add-on Name": "Funeral Expense Rider",
+        Costper1k: 0.25,
+      },
+      {
+        "Add-on Number": "10",
+        "Add-on Name": "Employment Loss No Premium Rider",
+        Costper1k: 10,
+      },
+      { "Add-on Number": "11", "Add-on Name": "Travel Add-on", Costper1k: 5 },
+      {
+        "Add-on Number": "12",
+        "Add-on Name": "Premium Return in Term Life",
+        Costper1k: 3,
+      },
+      {
+        "Add-on Number": "65",
+        "Add-on Name": "Loan Against Insured Amount",
+        Costper1k: 0,
+      },
+      {
+        "Add-on Number": "66",
+        "Add-on Name": "Grace Period for Pay",
+        Costper1k: 0,
+      },
+      {
+        "Add-on Number": "67",
+        "Add-on Name": "Discount for Salaried Employees",
+        Costper1k: 0,
+      },
+      { "Add-on Number": "68", "Add-on Name": "Online Discount", Costper1k: 0 },
+      {
+        "Add-on Number": "69",
+        "Add-on Name": "Free Annual Health Checkup Whole Body",
+        Costper1k: 0,
+      },
+      {
+        "Add-on Number": "70",
+        "Add-on Name": "Free Lookup Period",
+        Costper1k: 0,
+      },
+      {
+        "Add-on Number": "71",
+        "Add-on Name": "Policy Conversion",
+        Costper1k: 0,
+      },
+    ];
 
- useEffect(() => {
-   const hardcodedData = [
-     { "Add-on Number": "1", "Add-on Name": "Accidental Death Benefit", "Costper1k": 1 },
-     { "Add-on Number": "2", "Add-on Name": "Termrider", "Costper1k": 5 },
-     { "Add-on Number": "3.1", "Add-on Name": "Critical Illness Payout", "Costper1k": 2 },
-     { "Add-on Number": "3.2", "Add-on Name": "Critical Illness No Premium Pay", "Costper1k": 1 },
-     { "Add-on Number": "4", "Add-on Name": "Spouse Rider", "Costper1k": 10 },
-     { "Add-on Number": "5.1", "Add-on Name": "Disability Payout", "Costper1k": 2 },
-     { "Add-on Number": "5.2", "Add-on Name": "Disability No Premium Pay", "Costper1k": 1 },
-     { "Add-on Number": "6", "Add-on Name": "Child Education Rider", "Costper1k": 1 },
-     { "Add-on Number": "7", "Add-on Name": "Hospital Rider", "Costper1k": 3 },
-     { "Add-on Number": "8", "Add-on Name": "Time Extension Rider", "Costper1k": 1 },
-     { "Add-on Number": "9", "Add-on Name": "Funeral Expense Rider", "Costper1k": 0.25 },
-     { "Add-on Number": "10", "Add-on Name": "Employment Loss No Premium Rider", "Costper1k": 10 },
-     { "Add-on Number": "11", "Add-on Name": "Travel Add-on", "Costper1k": 5 },
-     { "Add-on Number": "12", "Add-on Name": "Premium Return in Term Life", "Costper1k": 3 },
-     { "Add-on Number": "65", "Add-on Name": "Loan Against Insured Amount", "Costper1k": 0 },
-     { "Add-on Number": "66", "Add-on Name": "Grace Period for Pay", "Costper1k": 0 },
-     { "Add-on Number": "67", "Add-on Name": "Discount for Salaried Employees", "Costper1k": 0 },
-     { "Add-on Number": "68", "Add-on Name": "Online Discount", "Costper1k": 0 },
-     { "Add-on Number": "69", "Add-on Name": "Free Annual Health Checkup Whole Body", "Costper1k": 0 },
-     { "Add-on Number": "70", "Add-on Name": "Free Lookup Period", "Costper1k": 0 },
-     { "Add-on Number": "71", "Add-on Name": "Policy Conversion", "Costper1k": 0 },
-   ];
+    setAddonData(hardcodedData);
 
-   setAddonData(hardcodedData);
-  
-   let term = document.getElementById("preselect");
-   term.click();
- }, []);
+    let term = document.getElementById("preselect");
+    term.click();
+  }, []);
+
+  useEffect(() => {
+    console.log(formData);
+
+    if (formData.name !== "") {
+      let filteredData = DataFilter(formData);
+
+      // Process each policy
+      filteredData = filteredData
+        .map((policyData) => {
+          const policyNumber = policyData.policy;
+
+          // Check if the policy has all the selected add-ons
+          const hasAllAddons = selectedAddons.every((addon) =>
+            hasAddonForPolicy(policyNumber, parseFloat(addon))
+          );
+
+          if (!hasAllAddons) {
+            return null; // Exclude this policy if it doesn't match the add-ons
+          }
+
+          // Calculate premium and add-on cost for policies that match
+          const premium = calculatePremium(formData, policyNumber);
+          const addoncost = calculateTotalAddonsCost(selectedAddons, formData);
+
+          // Get CSR, Policy Name, and Company Name using functions and mappings
+          const csr = getCsrByPolicyNumber(policyNumber);
+          const policyName = getPolicyNameByPolicyNumber(policyNumber);
+
+          // Determine the company name based on policy number
+          let companyName = "";
+          if (company1Policies.includes(policyNumber)) {
+            companyName = "Himalayan Life";
+          } else if (company2Policies.includes(policyNumber)) {
+            companyName = "Life Insurance Corporation Nepal";
+          } else if (company3Policies.includes(policyNumber)) {
+            companyName = "Nepal Life";
+          }
+
+          return {
+            ...policyData,
+            premium,
+            addonCost: addoncost,
+            csr, // Adding CSR to the policy object
+            policyName, // Adding Policy Name to the policy object
+            companyName, // Adding Company Name to the policy object
+          };
+        })
+        .filter(Boolean); // Remove null entries (policies that don't match)
+
+      // Update the comparison result
 
 
-useEffect(() => {
-  console.log(formData);
+      setComparisonResult(
+        filteredData.map((policy, index) => (
+          <div key={index} className="filteredPolicies">
+            <h1>
+              {policy.policyName}
+              <span className="cardPolicyId">{policy.policy}</span>
+            </h1>
+            <div className="cardCompanyName">{policy.companyName}</div>
+            <div className="cardCSR">
+              CSR: {policy.csr ? policy.csr : "N/A"}
+            </div><br/>
+            {/* {selectedAddons.join(", ")}. AddonCost:{" "} */}
+            <div className="cardCost">
+              <div className="cardPremiumCost">
+                Premium: {policy.premium ? policy.premium : "0"}
+              </div>
+              <div className="cardAddonCost">
+                AddonCost: {policy.addonCost ? policy.addonCost : "0"}
+              </div>
+            </div>
 
-  if (formData.name !== "") {
-    let filteredData = DataFilter(formData);
+            <div className="cardAddons">
+              Addons:
+              <div className="cardAddonsContent">
+              {policyAddons[policy.policy].map((element, index) => {
+                if (element < 65) {
+                  return (
+                    <div key={index} className="addonsNamesPaid">
+                      {addonIndNames[element]}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={index} className="addonsNamesFree">
+                      {addonIndNames[element]}
+                    </div>
+                  );
+                }
+              })}
+              </div>
+            </div>
+          </div>
+        ))
+      );
+    }
+  }, [formData, selectedAddons]);
 
-    // Process each policy
-    filteredData = filteredData
-      .map((policyData) => {
-        const policyNumber = policyData.policy;
+  const handleAddonChange = (event) => {
+    const addonNumber = event.target.id;
 
-        // Check if the policy has all the selected add-ons
-        const hasAllAddons = selectedAddons.every((addon) =>
-          hasAddonForPolicy(policyNumber, parseFloat(addon))
-        );
-
-        if (!hasAllAddons) {
-          return null; // Exclude this policy if it doesn't match the add-ons
-        }
-
-        // Calculate premium and add-on cost for policies that match
-        const premium = calculatePremium(formData, policyNumber);
-        const addoncost = calculateTotalAddonsCost(selectedAddons, formData);
-
-        // Get CSR, Policy Name, and Company Name using functions and mappings
-        const csr = getCsrByPolicyNumber(policyNumber);
-        const policyName = getPolicyNameByPolicyNumber(policyNumber);
-
-        // Determine the company name based on policy number
-        let companyName = "";
-        if (company1Policies.includes(policyNumber)) {
-          companyName = "Himalayan Life";
-        } else if (company2Policies.includes(policyNumber)) {
-          companyName = "Life Insurance Corporation Nepal";
-        } else if (company3Policies.includes(policyNumber)) {
-          companyName = "Nepal Life";
-        }
-
-        return {
-          ...policyData,
-          premium,
-          addonCost: addoncost,
-          csr, // Adding CSR to the policy object
-          policyName, // Adding Policy Name to the policy object
-          companyName, // Adding Company Name to the policy object
-        };
-      })
-      .filter(Boolean); // Remove null entries (policies that don't match)
-
-    // Update the comparison result
-    setComparisonResult(
-      filteredData.map((policy, index) => (
-        <div key={index} className="filteredPolicies">
-          <h1>{policy.policyName} (Policy ID: {policy.policy})</h1>
-          Company: {policy.companyName}.
-          Premium: {policy.premium ? policy.premium : "N/A"}.
-          CSR: {policy.csr ? policy.csr : "N/A"}.
-          Addons: {selectedAddons.join(", ")}.
-          AddonCost: {policy.addonCost ? policy.addonCost : "N/A"}.
-        </div>
-
-      ))
+    // If checkbox is checked, add to array; if unchecked, remove from array
+    setSelectedAddons((prevSelectedAddons) =>
+      event.target.checked
+        ? [...prevSelectedAddons, addonNumber]
+        : prevSelectedAddons.filter((addon) => addon !== addonNumber)
     );
-  }
-}, [formData, selectedAddons]);
-
-
- const handleAddonChange = (event) => {
-  const addonNumber = event.target.id;
-
-  // If checkbox is checked, add to array; if unchecked, remove from array
-  setSelectedAddons(prevSelectedAddons =>
-    event.target.checked
-      ? [...prevSelectedAddons, addonNumber]
-      : prevSelectedAddons.filter(addon => addon !== addonNumber)
-  );
- };
-
-
+  };
 
   // start where not to change
   return (
     <>
       {showComparisonPage ? (
-        < div id="compareContainer">
+        <div id="compareContainer">
           <div className="compareContents" id="searchPlans">
             <h1>
               <span id="searchSpan">Search</span>
@@ -268,8 +404,7 @@ useEffect(() => {
                 <span id="term">
                   <input type="radio" name="term" value="0.083" /> Monthly
                   <input type="radio" name="term" value="0.25" /> Quarterly
-                  <input type="radio" name="term" value="0.5" />{" "}
-                  Half-Yearly
+                  <input type="radio" name="term" value="0.5" /> Half-Yearly
                   <input
                     id="preselect"
                     type="radio"
@@ -279,11 +414,7 @@ useEffect(() => {
                   />{" "}
                   Yearly
                 </span>
-                <input
-                  type="text"
-                  placeholder="Age"
-                  id="ageField"
-                />
+                <input type="text" placeholder="Age" id="ageField" />
                 <input
                   type="text"
                   placeholder="Occupation(optional)"
@@ -302,76 +433,91 @@ useEffect(() => {
           </div>
 
           <div id="chooseBreak"></div>
-        </div >
+        </div>
       ) : (
         <>
-
           <div className="comparisonView">
             {
               // POLICY FILTERED CARDS
             }
-            <div id="policyCards">
-              {comparisonResult}
-            </div>
+            <div id="policyCards">{comparisonResult}</div>
 
             <div id="majorView">
               <h1> Choose an Add-on </h1>
-              <div id="filterinfoicon">ⓘ<span id="filterinfo">Click on a addon to filter the policies</span></div>
+              <div id="filterinfoicon">
+                ⓘ
+                <span id="filterinfo">
+                  Click on a addon to filter the policies
+                </span>
+              </div>
               <h3> Free Add-on </h3>
               <div id="filterFree" className="filter">
-                {
-                  addonData.map((addon, index) => {
-                    if ((addon["Add-on Number"] != "") && (addon["Costper1k"] == "0")) {
-                      return (
-                        <div key={index} className="filterAddons">
-                          <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} onChange={handleAddonChange} />
-                          <label htmlFor={addon["Add-on Number"]}>{addon["Add-on Name"]}</label>
-                        </div>
-                      );
-                    }
-                  })
-                }
+                {addonData.map((addon, index) => {
+                  if (
+                    addon["Add-on Number"] != "" &&
+                    addon["Costper1k"] == "0"
+                  ) {
+                    return (
+                      <div key={index} className="filterAddons">
+                        <input
+                          type="checkbox"
+                          name={addon["Add-on Name"]}
+                          id={addon["Add-on Number"]}
+                          onChange={handleAddonChange}
+                        />
+                        <label htmlFor={addon["Add-on Number"]}>
+                          {addon["Add-on Name"]}
+                        </label>
+                      </div>
+                    );
+                  }
+                })}
               </div>
               <h3> Paid Add-on </h3>
               <div id="filterFree" className="filter">
-                {
-                  addonData.map((addon, index) => {
-                    if ((addon["Add-on Number"] != "") && (addon["Costper1k"] != "0")) {
-                      return (
-                        <div key={index} className="filterAddons">
-                          <input type="checkbox" name={addon["Add-on Name"]} id={addon["Add-on Number"]} onChange={handleAddonChange} />
-                          <label htmlFor={addon["Add-on Number"]}>{addon["Add-on Name"]}</label>
-                        </div>
-                      );
-                    }
-                  })
-                }
+                {addonData.map((addon, index) => {
+                  if (
+                    addon["Add-on Number"] != "" &&
+                    addon["Costper1k"] != "0"
+                  ) {
+                    return (
+                      <div key={index} className="filterAddons">
+                        <input
+                          type="checkbox"
+                          name={addon["Add-on Name"]}
+                          id={addon["Add-on Number"]}
+                          onChange={handleAddonChange}
+                        />
+                        <label htmlFor={addon["Add-on Number"]}>
+                          {addon["Add-on Name"]}
+                        </label>
+                      </div>
+                    );
+                  }
+                })}
               </div>
               <Calculator income={formData.income} insured_amount={formData.insuredAmount}></Calculator>
             </div>
           </div>
         </>
-      )
-      }
+      )}
     </>
-  );  
+  );
 }
-
-
 
 function calculateLoadingCharge(policyNumber, formData) {
   // Define the policy data and loading factors for each payment term
   const companyPolicies = {
     1: [1, 2, 3, 10, 11, 16, 17],
     2: [4, 5, 6, 12, 13, 18, 19],
-    3: [7, 8, 9, 14, 15, 20, 21]
+    3: [7, 8, 9, 14, 15, 20, 21],
   };
 
   const paymentMethods = {
-    1: { loading1: 1, loading2: 0.98, loading3: 0.97 },  // Yearly
+    1: { loading1: 1, loading2: 0.98, loading3: 0.97 }, // Yearly
     0.5: { loading1: 1.01, loading2: 1.0, loading3: 0.99 }, // Half-yearly
     0.25: { loading1: 1.03, loading2: 1.2, loading3: 1.0 }, // Quarterly
-    0.083: { loading1: 1.07, loading2: 1.5, loading3: 1.2 } // Monthly
+    0.083: { loading1: 1.07, loading2: 1.5, loading3: 1.2 }, // Monthly
   };
 
   // Step 1: Find which company the policy belongs to
@@ -390,7 +536,7 @@ function calculateLoadingCharge(policyNumber, formData) {
   }
 
   // Step 2: Get the loading charge factors based on the payment term (FormData.term)
-  const loadingFactors = paymentMethods[formData.term];  // Get loading factors based on FormData.term
+  const loadingFactors = paymentMethods[formData.term]; // Get loading factors based on FormData.term
   if (!loadingFactors) {
     console.error("Invalid term value.");
     return 0;
@@ -400,31 +546,29 @@ function calculateLoadingCharge(policyNumber, formData) {
 
   // Step 3: Apply the correct loading factor based on company
   if (companyId === 1) {
-    loadingCharge = loadingFactors.loading1;  // Company 1 uses loading1
+    loadingCharge = loadingFactors.loading1; // Company 1 uses loading1
   } else if (companyId === 2) {
-    loadingCharge = loadingFactors.loading2;  // Company 2 uses loading2
+    loadingCharge = loadingFactors.loading2; // Company 2 uses loading2
   } else if (companyId === 3) {
-    loadingCharge = loadingFactors.loading3;  // Company 3 uses loading3
+    loadingCharge = loadingFactors.loading3; // Company 3 uses loading3
   }
 
-  return loadingCharge;  // Return the calculated loading charge
+  return loadingCharge; // Return the calculated loading charge
 }
-
-
 
 function calculateRebate(policyNumber, formData) {
   // Define the company policies and the rebate brackets
   const companyPolicies = {
     1: [1, 2, 3, 10, 11, 16, 17],
     2: [4, 5, 6, 12, 13, 18, 19],
-    3: [7, 8, 9, 14, 15, 20, 21]
+    3: [7, 8, 9, 14, 15, 20, 21],
   };
 
   const rebateBrackets = [
     { min: 25000, max: 49000, rebate1: 0.5, rebate2: 0.25, rebate3: 1 },
     { min: 50000, max: 99000, rebate1: 1.0, rebate2: 0.5, rebate3: 1.25 },
     { min: 100000, max: 199000, rebate1: 1.5, rebate2: 1.0, rebate3: 1.75 },
-    { min: 200000, max: Infinity, rebate1: 2.0, rebate2: 2.0, rebate3: 2.5 }
+    { min: 200000, max: Infinity, rebate1: 2.0, rebate2: 2.0, rebate3: 2.5 },
   ];
 
   // Step 1: Find which company the policy belongs to
@@ -441,7 +585,10 @@ function calculateRebate(policyNumber, formData) {
 
   // Loop through the rebate brackets and find the appropriate rebate
   for (let bracket of rebateBrackets) {
-    if (formData.insuredAmount >= bracket.min && formData.insuredAmount <= bracket.max) {
+    if (
+      formData.insuredAmount >= bracket.min &&
+      formData.insuredAmount <= bracket.max
+    ) {
       // Step 3: Get the correct rebate based on company
       if (companyId === 1) {
         rebate = bracket.rebate1;
@@ -463,39 +610,37 @@ function calculateRebate(policyNumber, formData) {
   return rebate;
 }
 
-
-
 function calculateTotalAddonsCost(selectedAddons, formData) {
   // Define the addon costs (addon number -> cost per 1k)
   const addonCosts = {
-    1: 1,       // Accidental Death Benefit
-    2: 5,       // Termrider
-    3.1: 2,     // Critical Illness Payout
-    3.2: 1,     // Critical Illness No Premium Pay
-    4: 10,      // Spouse Rider
-    5.1: 2,     // Disability Payout
-    5.2: 1,     // Disability No Premium Pay
-    6: 1,       // Child Education Rider
-    7: 3,       // Hospital Rider
-    8: 1,       // Time Extension Rider
-    9: 0.25,    // Funeral Expense Rider
-    10: 10,     // Employment Loss No Premium Rider
-    11: 5,      // Travel Add-on
-    12: 3,      // Premium Return in Term Life
-    65: 0,      // Loan Against Insured Amount
-    66: 0,      // Grace Period for Pay
-    67: 0,      // Discount for Salaried Employees
-    68: 0,      // Online Discount
-    69: 0,      // Free Annual Health Checkup Whole Body
-    70: 0,      // Free Lookup Period
-    71: 0       // Policy Conversion
+    1: 1, // Accidental Death Benefit
+    2: 5, // Termrider
+    3.1: 2, // Critical Illness Payout
+    3.2: 1, // Critical Illness No Premium Pay
+    4: 10, // Spouse Rider
+    5.1: 2, // Disability Payout
+    5.2: 1, // Disability No Premium Pay
+    6: 1, // Child Education Rider
+    7: 3, // Hospital Rider
+    8: 1, // Time Extension Rider
+    9: 0.25, // Funeral Expense Rider
+    10: 10, // Employment Loss No Premium Rider
+    11: 5, // Travel Add-on
+    12: 3, // Premium Return in Term Life
+    65: 0, // Loan Against Insured Amount
+    66: 0, // Grace Period for Pay
+    67: 0, // Discount for Salaried Employees
+    68: 0, // Online Discount
+    69: 0, // Free Annual Health Checkup Whole Body
+    70: 0, // Free Lookup Period
+    71: 0, // Policy Conversion
   };
 
   // Step 1: Initialize total addon cost
   let totalAddonCost = 0;
 
   // Step 2: Loop through the selected addons and sum the costs
-  selectedAddons.forEach(addon => {
+  selectedAddons.forEach((addon) => {
     if (addonCosts[addon]) {
       totalAddonCost += addonCosts[addon];
     }
@@ -504,18 +649,24 @@ function calculateTotalAddonsCost(selectedAddons, formData) {
   // Step 3: Multiply by insured amount, divide by 10000
   let calculatedAddonCost = (totalAddonCost * formData.insuredAmount) / 10000;
 
-  calculatedAddonCost = calculatedAddonCost/formData.term ;
+  calculatedAddonCost = calculatedAddonCost / formData.term;
 
   // Return the total calculated addon cost
   return calculatedAddonCost;
 }
 
+async function calculatePremium(formData, policyNumber) {
+  // const tabRate = 1000
+  // const [tabRate, setTabRate] = useState(1000);
 
-
-function calculatePremium(formData, policyNumber) {
-  // Step 1: Calculate the tab rate (this function is now updated to return 150)
-  const tabRate = 1000;
-  console.log("TABRATE", calculateTabRate(policyNumber, formData.age, formData.insuredTerm).then())
+  // Step 1: Get the tab rate from the csvs and calculate it for the respective policies
+  let tabRate = await calculateTabRate(
+    policyNumber,
+    formData.age,
+    formData.insuredTerm
+  ); // Brought from the db
+  console.log(tabRate);
+  // tabRatePromise.then(val => setTabRate(val))
 
   // Step 2: Get the loading charge using the provided loading charge function
   const loadingCharge = calculateLoadingCharge(policyNumber, formData);
@@ -524,7 +675,8 @@ function calculatePremium(formData, policyNumber) {
   const rebate = calculateRebate(formData.insuredAmount, policyNumber);
 
   // Step 4: Multiply by insured amount and divide by 1000
-  const premiumBase = tabRate * loadingCharge * (formData.insuredAmount - rebate) / 1000;
+  const premiumBase =
+    (tabRate * loadingCharge * (formData.insuredAmount - rebate)) / 1000;
 
   // Step 5: Divide by the term (to get the premium per term)
   const premiumPerTerm = premiumBase / formData.term;
@@ -541,66 +693,96 @@ function calculatePremium(formData, policyNumber) {
   */
 
   // Return both the premium base and total premium with addons
-  return premiumBase;
+  return Math.round(premiumPerTerm*100)/100;
 }
 
 function findTabRateForEndowment(tabRateData, age, insuredTerm) {
-  const ageRow = tabRateData.find(row => parseInt(row[0]) === age);
-  const toplessTabRateData = tabRateData;
-  toplessTabRateData.splice(0,1)
-  console.log("Age", age, toplessTabRateData)
+  const toplessTabRateData = tabRateData.slice(1);
+  const ageRow = toplessTabRateData
+    .find((row) => parseInt(row[0]) == age)
+    .slice(1);
 
   if (!ageRow) {
     console.error(`Age ${age} not found in the tab rate data for Endowment.`);
     return null; // Return null if the age isn't found
   }
 
-  const insuredTermColumn = Object.keys(ageRow).find(key => parseInt(key) === insuredTerm);
+  let termList = tabRateData[0];
+  termList.splice(0, 1);
+  const insuredTermPosition = Object.keys(termList).find(
+    (val) => parseInt(termList[val]) == insuredTerm
+  );
 
-  if (!insuredTermColumn) {
-    console.error(`Insured term ${insuredTerm} not found in the tab rate data for Endowment.`);
+  if (!insuredTermPosition) {
+    console.error(
+      `Insured term ${insuredTerm} not found in the tab rate data for Endowment.`
+    );
     return null; // Return null if the insured term isn't found
   }
 
-  return parseFloat(ageRow[insuredTermColumn]);
+  return parseFloat(ageRow[insuredTermPosition]);
 }
 
 // Function to find the Tab Rate for Money Back policies
 function findTabRateForMoneyBack(tabRateData, age, insuredTerm) {
-  const ageRow = tabRateData.find(row => parseInt(row.Age) === age);
+  const toplessTabRateData = tabRateData.slice(1);
+  const ageRow = toplessTabRateData
+    .find((row) => parseInt(row[0]) == age)
+    .slice(1);
 
+  // console.log("ageRow", age, toplessTabRateData, ageRow)
   if (!ageRow) {
     console.error(`Age ${age} not found in the tab rate data for Money Back.`);
     return null; // Return null if the age isn't found
   }
 
-  const insuredTermColumn = Object.keys(ageRow).find(key => parseInt(key) === insuredTerm);
+  let termList = tabRateData[0];
+  termList.splice(0, 1);
+  const insuredTermPosition = Object.keys(termList).find(
+    (val) => parseInt(termList[val]) == insuredTerm
+  );
 
-  if (!insuredTermColumn) {
-    console.error(`Insured term ${insuredTerm} not found in the tab rate data for Money Back.`);
+  // console.log("termList", age, toplessTabRateData, termList)
+  if (!insuredTermPosition) {
+    console.error(
+      `Insured term ${insuredTerm} not found in the tab rate data for Money Back.`
+    );
     return null; // Return null if the insured term isn't found
   }
 
-  return parseFloat(ageRow[insuredTermColumn]);
+  return parseFloat(ageRow[insuredTermPosition]);
 }
 
 // Function to find the Tab Rate for Term Life policies
-function findTabRateForTermLife(tabRateData, age, policyNumber) {
-  const ageRow = tabRateData.find(row => parseInt(row.Index) === age);
+function findTabRateForTermLife(tabRateData, rowVal, columnVal) {
+  const toplessTabRateData = tabRateData.slice(1);
+  const ageRow = toplessTabRateData
+    .find((row) => parseInt(row[0]) == rowVal)
+    .slice(1);
 
+  // console.log("ageRow", age, toplessTabRateData, ageRow)
   if (!ageRow) {
-    console.error(`Age ${age} not found in the tab rate data for Term Life.`);
+    console.error(
+      `Age ${rowVal} not found in the tab rate data for Money Back.`
+    );
     return null; // Return null if the age isn't found
   }
 
-  const policyColumn = Object.keys(ageRow).find(key => parseInt(key) === policyNumber);
+  let termList = tabRateData[0];
+  termList.splice(0, 1);
+  const insuredTermPosition = Object.keys(termList).find(
+    (val) => parseInt(termList[val]) == columnVal
+  );
 
-  if (!policyColumn) {
-    console.error(`Policy number ${policyNumber} not found in the tab rate data for Term Life.`);
-    return null; // Return null if the policy number isn't found
+  // console.log("termList", age, toplessTabRateData, termList)
+  if (!insuredTermPosition) {
+    console.error(
+      `Insured term ${columnVal} not found in the tab rate data for Money Back.`
+    );
+    return null; // Return null if the insured term isn't found
   }
 
-  return parseFloat(ageRow[policyColumn]);
+  return parseFloat(ageRow[insuredTermPosition]);
 }
 
 // Function to calculate the Tab Rate based on the policy type
@@ -638,42 +820,19 @@ async function fetchTabRateData(policyNumber) {
     console.log("ParsedData", parsedData);
     return parsedData.data;
   } catch (error) {
-    console.error(`Failed to fetch data for policy number ${policyNumber}:`, error);
+    console.error(
+      `Failed to fetch data for policy number ${policyNumber}:`,
+      error
+    );
     return null;
   }
 }
-
-
-const policyAddons = {
-  1: [1, 2, 3.1, 5.2, 7, 10, 65, 66, 68, 70],
-  2: [1, 2, 4, 6, 8, 11, 65, 67, 69, 71],
-  3: [1, 2, 3.2, 5.1, 9, 11, 65, 66, 67, 70],
-  4: [1, 2, 4, 7, 8, 10, 65, 68, 69, 71],
-  5: [1, 2, 3.1, 6, 9, 10, 65, 66, 69, 70],
-  6: [1, 2, 5.2, 7, 8, 11, 65, 67, 68, 71],
-  7: [1, 2, 3.2, 6, 8, 10, 65, 66, 67, 69],
-  8: [1, 2, 4, 5.1, 9, 11, 65, 68, 70, 71],
-  9: [1, 2, 3.1, 7, 8, 11, 65, 66, 69, 71],
-  10: [1, 2, 4, 6, 9, 10, 65, 67, 68, 70],
-  11: [1, 2, 3.2, 5.2, 7, 11, 65, 66, 67, 71],
-  12: [1, 2, 4, 6, 8, 9, 65, 68, 69, 70],
-  13: [1, 2, 3.1, 6, 7, 11, 65, 66, 70, 71],
-  14: [1, 2, 4, 5.1, 8, 10, 65, 67, 69, 70],
-  15: [1, 2, 3.2, 6, 9, 10, 65, 66, 68, 71],
-  16: [1, 2, 3.1, 7, 9, 12, 66, 68, 69, 71],
-  17: [1, 2, 4, 8, 11, 12, 67, 68, 70, 71],
-  18: [1, 2, 5.1, 6, 10, 12, 66, 67, 69, 70],
-  19: [1, 2, 3.2, 8, 11, 12, 66, 68, 70, 71],
-  20: [1, 2, 4, 6, 9, 12, 67, 69, 70, 71],
-  21: [1, 2, 5.2, 7, 10, 12, 66, 67, 68, 69]
-};
 
 // Function to check if a policy has the selected addon
 const hasAddonForPolicy = (policyNumber, addonId) => {
   const addons = policyAddons[policyNumber];
   return addons && addons.includes(addonId) ? 1 : 0;
 };
-
 
 const policyData = [
   { policyNumber: 1, name: "Himalayan Life Endowment Plan", csr: 88.3 },
@@ -712,60 +871,26 @@ const getPolicyNameByPolicyNumber = (policyNumber) => {
 };
 
 
-const addonData = {
-  1: 'Accidental Death Benefit',
-  2: 'Termrider',
-  3.1: 'Critical Illness Payout',
-  3.2: 'Critical Illness No Premium Pay',
-  4: 'Spouse Rider',
-  5.1: 'Disability Payout',
-  5.2: 'Disability No Premium Pay',
-  6: 'Child Education Rider',
-  7: 'Hospital Rider',
-  8: 'Time Extension Rider',
-  9: 'Funeral Expense Rider',
-  10: 'Employment Loss No Premium Rider',
-  11: 'Travel Add-on',
-  12: 'Premium Return in Term Life',
-  65: 'Loan Against Insured Amount',
-  66: 'Grace Period for Pay',
-  67: 'Discount for Salaried Employees',
-  68: 'Online Discount',
-  69: 'Free Annual Health Checkup Whole Body',
-  70: 'Free Lookup Period',
-  71: 'Policy Conversion'
-};
-
-
 const companyPolicies = {
-  1: 'Himalayan Life',
-  2: 'Life Insurance Corporation Nepal',
-  3: 'Nepal Life'
+  1: "Himalayan Life",
+  2: "Life Insurance Corporation Nepal",
+  3: "Nepal Life",
 };
-
-
 
 const getCompanyName = (policyNumber) => {
   if (company1Policies.includes(policyNumber)) {
-    return 'Himalayan Life';
+    return "Himalayan Life";
   } else if (company2Policies.includes(policyNumber)) {
-    return 'Life Insurance Corporation Nepal';
+    return "Life Insurance Corporation Nepal";
   } else if (company3Policies.includes(policyNumber)) {
-    return 'Nepal Life';
+    return "Nepal Life";
   }
-  return '';
+  return "";
 };
 
 const getAddonName = (addonId) => {
-  return addonData[addonId] || '';
+  return addonData[addonId] || "";
 };
-
-
-
-
-
-
-
 
 // i had to remove this cz this made me pagal .. now this has to be re added
 /*
